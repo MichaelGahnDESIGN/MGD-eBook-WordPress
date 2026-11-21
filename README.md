@@ -22,7 +22,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
 ## Installieren (Schritt für Schritt)
 
-1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.4.0.zip` (die Zahl ändert sich).
+1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.4.1.zip` (die Zahl ändert sich).
 2. Öffne in WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Wähle die ZIP-Datei aus und klicke auf **Jetzt installieren**.
 4. Klicke auf **Plugin aktivieren**.
@@ -109,6 +109,7 @@ Unter **eBook → Info und Updates** zeigt das Plugin andere MGD-Plugins als Kar
 | „Die Datei ist größer als das Upload-Limit“ | Der Server erlaubt nur kleine Dateien. Der Hoster kann das Limit erhöhen (`upload_max_filesize`). Das aktuelle Limit steht unter dem Uploader. |
 | „Das ist keine gültige EPUB-Datei“ | Die Datei ist beschädigt oder wurde nur umbenannt. Bitte neu aus dem Schreibprogramm exportieren. |
 | „Es fehlt die PHP-Erweiterung zip“ | Beim Hoster die PHP-Erweiterung „zip“ einschalten lassen. |
+| Alle eBooks haben denselben Titel | Das Plugin nimmt den Titel, der **in der EPUB-Datei** gespeichert ist, nicht den Dateinamen. Manche Programme (zum Beispiel Affinity) übernehmen beim Export den Titel vom letzten Buch. Den Titel im Programm bei den Metadaten des Dokuments ändern, neu exportieren und neu hochladen. |
 | Das Cover fehlt, obwohl die Datei eins hat | Manche Programme speichern das Cover ungewöhnlich. Das Buch funktioniert trotzdem, es zeigt dann die Platzhalter-Karte. |
 | Der Download startet nicht, sondern zeigt Text | Der Server kennt die Endung `.epub` nicht. Der Hoster soll den Dateityp `application/epub+zip` für `.epub` eintragen. |
 
@@ -122,6 +123,7 @@ php tests/updater.php                               # Test Update-Weg und Prüfs
 php tests/install.php                               # Test Installation melden (Free-Lizenz)
 php tests/catalog-feed.php                          # Test Empfehlungs-Feed
 php tests/kit-wiring.php                            # Test Baukasten-Einbau
+php tests/cover-save.php                            # Test Cover speichern (auch mit Bild-Plugins)
 python3 scripts/build-package.py                    # ZIP bauen (landet in dist/)
 ```
 

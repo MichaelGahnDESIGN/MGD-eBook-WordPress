@@ -1,5 +1,10 @@
 # Änderungen
 
+## 0.4.1 – Cover wird wieder erkannt
+
+- Behoben: Auf Websites mit einem Bild-Plugin, das Bilder automatisch in AVIF oder WebP umwandelt (zum Beispiel „Modern Image Formats“ oder EWWW), stand bei jedem eBook „kein Cover in der Datei“. Das Cover wurde zwar gespeichert, aber unter einem anderen Dateinamen. Jetzt bleibt das Cover PNG oder JPEG und wird gefunden. Das gilt auch für **Cover ändern**.
+- Bereits hochgeladene eBooks: einmal **Cover ändern → Original aus der EPUB wiederherstellen** klicken, dann ist das Cover da.
+
 ## 0.4.0 – Gemeinsamer Baukasten
 
 - MGD eBook nutzt jetzt den gemeinsamen Baukasten der MGD-Plugins. Updates, die Meldung der Installation und die Empfehlungen laufen darüber.
