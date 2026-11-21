@@ -1,5 +1,13 @@
 # Änderungen
 
+## 0.1.1 – Übersichtlicheres Backend
+
+- Neu gestaltete Seite **eBook**: Kopfbereich, Schritt 1 (hochladen) und Schritt 2 (kopieren).
+- Uploader als Ablagefläche: Dateien hineinziehen oder klicken. Gewählte Dateien werden vor dem Hochladen aufgelistet.
+- eBooks als Karten mit Cover, Titel, Autor und zwei Kopieren-Knöpfen (Link und Shortcode).
+- Der Hochladen-Knopf wird während des Uploads gesperrt (kein doppeltes Hochladen).
+- Hilfe ist einklappbar, damit die Seite ruhig bleibt.
+
 ## 0.1.0 – Erste Version
 
 - Neuer Menüpunkt **eBook** im WordPress-Backend.

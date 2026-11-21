@@ -1,11 +1,96 @@
 /* MGD eBook Backend */
-.mgd-ebook-admin { max-width: 1400px; }
-.mgd-ebook-admin__intro { max-width: 70ch; font-size: 14px; }
-.mgd-ebook-admin__box { background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #b51f2a; padding: 4px 20px 16px; margin: 16px 0 28px; max-width: 760px; }
-.mgd-ebook-admin__table td { vertical-align: top; }
-.mgd-ebook-admin__cover { width: 72px; }
-.mgd-ebook-admin__cover img { display: block; height: auto; border-radius: 3px; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
-.mgd-ebook-admin__nocover { display: inline-block; width: 56px; padding: 18px 4px; font-size: 11px; text-align: center; background: #f0f0f1; border-radius: 3px; color: #50575e; }
-.mgd-ebook-admin__field { width: 100%; max-width: 360px; margin-bottom: 4px; font-family: Menlo, Consolas, monospace; font-size: 12px; }
-.mgd-ebook-admin__delete { display: inline-block; margin-left: 6px; }
-.mgd-ebook-admin__help li { margin-bottom: 6px; max-width: 80ch; }
+.mgd-ebook-admin {
+  --ink: #172d2a;
+  --muted: #52625e;
+  --line: #d9e1dc;
+  --paper: #f5f6f2;
+  --green: #172c28;
+  --gold: #d6b36b;
+  --accent: #b51f2a;
+  max-width: 1280px;
+  margin: 20px 20px 0 2px;
+  color: var(--ink);
+}
+.mgd-ebook-admin * { box-sizing: border-box; }
+
+/* Kopfbereich */
+.mgd-ebook-admin__hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 32px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, var(--green) 60%, #315f50);
+  color: #fff;
+}
+.mgd-ebook-admin__hero h1 { margin: 4px 0 6px; padding: 0; color: #fff; font-size: 30px; line-height: 1.15; }
+.mgd-ebook-admin__hero p { margin: 0; color: #cddcd5; font-size: 14px; }
+.mgd-ebook-admin__hero .mgd-ebook-admin__eyebrow { color: var(--gold); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+.mgd-ebook-admin__eyebrow span { display: inline-block; margin-right: 4px; padding: 1px 7px; border-radius: 4px; background: var(--gold); color: var(--green); font-weight: 700; }
+.mgd-ebook-admin__hero .mgd-ebook-admin__count { flex: none; padding: 10px 18px; border: 1px solid rgba(255, 255, 255, .25); border-radius: 999px; color: #fff; font-size: 14px; }
+.mgd-ebook-admin__count strong { font-size: 22px; margin-right: 2px; }
+
+.mgd-ebook-admin .notice { margin: 16px 0 0; }
+
+/* Schritte */
+.mgd-ebook-admin__heading,
+.mgd-ebook-admin__panel h2 { display: flex; align-items: center; gap: 10px; margin: 28px 0 12px; padding: 0; font-size: 18px; }
+.mgd-ebook-admin__step { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700; }
+.mgd-ebook-admin__panel { margin-top: 8px; }
+
+/* Dropzone */
+.mgd-ebook-admin__drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 34px 20px;
+  border: 2px dashed #9fb3aa;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.mgd-ebook-admin__drop:hover,
+.mgd-ebook-admin__drop.is-over,
+.mgd-ebook-admin__drop:focus-within { border-color: var(--accent); background: #fff8f8; }
+.mgd-ebook-admin__drop input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.mgd-ebook-admin__drop-icon { font-size: 28px; line-height: 1; color: var(--accent); }
+.mgd-ebook-admin__drop-title { font-size: 16px; font-weight: 600; }
+.mgd-ebook-admin__drop-sub { color: var(--muted); font-size: 13px; }
+.mgd-ebook-admin__chosen { margin: 12px 0 0; padding: 0; list-style: none; }
+.mgd-ebook-admin__chosen li { display: inline-block; margin: 0 6px 6px 0; padding: 4px 12px; border-radius: 999px; background: #e6efe9; font-size: 13px; }
+.mgd-ebook-admin__chosen[hidden] { display: none; }
+
+/* Karten */
+.mgd-ebook-admin__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 18px; }
+.mgd-ebook-admin__card { display: flex; flex-direction: column; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 1px 3px rgba(23, 45, 42, .06); }
+.mgd-ebook-admin__card-head { min-height: 104px; display: flex; gap: 14px; align-items: flex-start; }
+.mgd-ebook-admin__cover { flex: none; width: 72px; height: auto; border-radius: 4px; box-shadow: 0 3px 10px rgba(0, 0, 0, .25); }
+.mgd-ebook-admin__cover--none { display: flex; align-items: center; justify-content: center; height: 104px; background: linear-gradient(160deg, #203e36, var(--green)); color: var(--gold); font: 700 28px Georgia, serif; box-shadow: 0 3px 10px rgba(0, 0, 0, .25); }
+.mgd-ebook-admin__card h3 { margin: 0 0 2px; font-size: 16px; line-height: 1.3; }
+.mgd-ebook-admin__author { margin: 0; color: var(--muted); }
+.mgd-ebook-admin__meta { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+.mgd-ebook-admin__row label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; }
+.mgd-ebook-admin__row small { color: var(--muted); font-weight: 400; }
+.mgd-ebook-admin__copy { display: flex; gap: 6px; }
+.mgd-ebook-admin__copy input { flex: 1; min-width: 0; font: 12px Menlo, Consolas, monospace; background: #f6f7f7; }
+.mgd-ebook-admin__copy .button { min-width: 92px; }
+.mgd-ebook-admin__actions { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+.mgd-ebook-admin__actions form { margin: 0; }
+.mgd-ebook-admin__delete { padding: 0; border: 0; background: none; color: #b32d2e; text-decoration: underline; cursor: pointer; font-size: 13px; }
+.mgd-ebook-admin__delete:hover { color: #8a1f20; }
+.mgd-ebook-admin__empty { padding: 28px; border: 1px dashed var(--line); border-radius: 12px; background: #fff; text-align: center; color: var(--muted); }
+
+/* Hilfe */
+.mgd-ebook-admin__help { margin: 28px 0; padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.mgd-ebook-admin__help summary { cursor: pointer; font-weight: 600; }
+.mgd-ebook-admin__help li { margin-bottom: 8px; max-width: 80ch; }
+
+@media (max-width: 600px) {
+  .mgd-ebook-admin__hero { flex-direction: column; align-items: flex-start; }
+  .mgd-ebook-admin__grid { grid-template-columns: 1fr; }
+}
