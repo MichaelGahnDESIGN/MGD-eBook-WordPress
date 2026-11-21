@@ -1,5 +1,14 @@
 # Änderungen
 
+## 0.2.0 – Cover ändern
+
+- Neuer Knopf **Cover ändern** bei jedem eBook.
+- Bild aus der Mediathek wählen (dort kann man auch neue Bilder hochladen).
+- Kleiner Editor: Bild mit Maus oder Pfeiltasten verschieben, mit Regler oder Plus/Minus die Größe einstellen. Der Rahmen zeigt den späteren Ausschnitt.
+- Das vorhandene Cover lässt sich ebenfalls neu ausschneiden.
+- **Original aus der EPUB wiederherstellen** holt das ursprüngliche Cover zurück.
+- Das neue Cover erscheint sofort in der Liste, ohne die Seite neu zu laden.
+
 ## 0.1.1 – Übersichtlicheres Backend
 
 - Neu gestaltete Seite **eBook**: Kopfbereich, Schritt 1 (hochladen) und Schritt 2 (kopieren).

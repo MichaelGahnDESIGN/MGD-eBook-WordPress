@@ -11,3 +11,4 @@ Bitte melde Sicherheitsprobleme **nicht** öffentlich als Issue. Schreibe stattd
 - Das Cover wird neu berechnet (verkleinert und neu gespeichert). So bleibt nichts Fremdes im Bild hängen. SVG-Cover werden nicht verwendet.
 - Texte aus der EPUB-Datei werden bei der Ausgabe immer maskiert.
 - Das Plugin lädt nichts von fremden Servern nach. Nur der Update-Check fragt GitHub (die Server-Adresse wird dabei übermittelt).
+- Beim Ändern des Covers sind nur echte Bilder (JPEG, PNG, GIF, WebP) erlaubt, kein SVG. Der Ausschnitt wird auf dem Server neu berechnet und gespeichert. Die Anfrage ist durch Sicherheits-Code und Rechteprüfung geschützt.

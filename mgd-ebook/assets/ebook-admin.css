@@ -94,3 +94,27 @@
   .mgd-ebook-admin__hero { flex-direction: column; align-items: flex-start; }
   .mgd-ebook-admin__grid { grid-template-columns: 1fr; }
 }
+
+/* Link-Knopf auf der Karte */
+.mgd-ebook-admin__link { padding: 0; border: 0; background: none; color: #2271b1; text-decoration: underline; cursor: pointer; font-size: 13px; }
+.mgd-ebook-admin__link:hover { color: #135e96; }
+
+/* Cover-Editor */
+.mgd-ebook-editor { position: fixed; inset: 0; z-index: 100100; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(10, 20, 18, .72); overflow: auto; }
+.mgd-ebook-editor[hidden] { display: none; }
+.mgd-ebook-editor__box { width: 100%; max-width: 440px; max-height: 100%; overflow: auto; padding: 24px; border-radius: 14px; background: #fff; box-shadow: 0 24px 70px rgba(0, 0, 0, .45); }
+.mgd-ebook-editor__box h2 { margin: 0; padding: 0; font-size: 20px; }
+.mgd-ebook-editor__book { margin: 2px 0 8px; color: #52625e; font-weight: 600; }
+.mgd-ebook-editor__stage { position: relative; width: 280px; aspect-ratio: 2 / 3; max-width: 100%; margin: 14px auto 8px; overflow: hidden; border-radius: 4px; background: #e6efe9; outline: 3px solid #d6b36b; outline-offset: 2px; cursor: grab; touch-action: none; user-select: none; }
+.mgd-ebook-editor__stage.is-drag { cursor: grabbing; }
+.mgd-ebook-editor__stage:focus-visible { outline-color: #b51f2a; }
+.mgd-ebook-editor__stage img { position: absolute; max-width: none; pointer-events: none; }
+.mgd-ebook-editor__empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; color: #52625e; text-align: center; padding: 20px; }
+.mgd-ebook-editor__empty[hidden] { display: none; }
+.mgd-ebook-editor__zoom { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 8px 0; }
+.mgd-ebook-editor__zoom input { width: 200px; }
+.mgd-ebook-editor__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center; }
+.mgd-ebook-editor__status { min-height: 1.4em; margin: 6px 0 0; text-align: center; color: #52625e; }
+.mgd-ebook-editor__status.is-error { color: #b32d2e; font-weight: 600; }
+.mgd-ebook-editor__footer { display: flex; gap: 8px; justify-content: flex-end; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid #d9e1dc; }
+body.mgd-ebook-editing { overflow: hidden; }

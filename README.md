@@ -69,9 +69,22 @@ Besucher sehen das Cover. Ein Klick darauf öffnet ein Fenster mit Titel, Autor,
 
 Die Zahl bei `id` steht schon im kopierten Shortcode. Du musst sie nicht selbst suchen.
 
+### Cover ändern
+
+Das Cover aus der EPUB-Datei passt nicht oder fehlt? Du kannst ein eigenes Bild nehmen:
+
+1. Gehe zu **eBook** und klicke beim Buch auf **Cover ändern**.
+2. Klicke auf **Bild aus Mediathek wählen …**. Dort kannst du ein vorhandenes Bild auswählen oder ein neues hochladen.
+3. Verschiebe das Bild im Rahmen mit der Maus (oder den Pfeiltasten). Mit dem Regler **Größe** (oder den Tasten **+** und **-**) vergrößerst du es. Der Rahmen zeigt genau den Ausschnitt, der später als Cover erscheint.
+4. Klicke auf **Cover speichern**.
+
+Das bisherige Cover kannst du im selben Fenster nochmal neu ausschneiden. Mit **Original aus der EPUB wiederherstellen** holst du das ursprüngliche Cover zurück.
+
+Tipp: Bücher-Cover sind meist im Format 2 zu 3 (hoch). Der Rahmen hat dieses Format.
+
 ### Wenn kein Cover in der Datei steckt
 
-Dann zeigt das Plugin eine dunkelgrüne Karte mit dem Buchtitel. Alles andere funktioniert gleich.
+Dann zeigt das Plugin eine dunkelgrüne Karte mit dem Buchtitel. Du kannst jederzeit ein eigenes Cover festlegen (siehe oben). Alles andere funktioniert gleich.
 
 ### Löschen
 
