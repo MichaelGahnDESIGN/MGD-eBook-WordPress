@@ -1,5 +1,12 @@
 # Änderungen
 
+## 0.3.0 – Gleicher Stand wie die anderen MGD-Plugins
+
+- Neu: Schalter **Installation bei Michael Gahn DESIGN melden** auf der Seite **eBook** (nur für Administratoren). Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
+- Updates kommen jetzt über theme.michael-gahn.de. Die ZIP-Datei wird vor dem Einspielen gegen Größe und Prüfsumme (SHA-256) geprüft. Automatische Updates sind aus, du klickst selbst.
+- **Weitere Plugins** nutzt den neuen Empfehlungs-Feed (`/api/v1/recommendations`) und fragt alle 15 Minuten neu statt alle 6 Stunden.
+- Beim Löschen des Plugins wird der Melde-Status entfernt. eBooks bleiben erhalten.
+
 ## 0.2.0 – Cover ändern
 
 - Neuer Knopf **Cover ändern** bei jedem eBook.

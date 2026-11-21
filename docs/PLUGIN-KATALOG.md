@@ -11,9 +11,9 @@ Unter **eBook → Weitere Plugins** zeigt MGD eBook die anderen Plugins von Mich
 
 ## Woher kommt die Liste?
 
-1. Zuerst fragt das Plugin `theme.michael-gahn.de` nach der aktuellen Liste.
+1. Zuerst fragt das Plugin `https://theme.michael-gahn.de/api/v1/recommendations/wordpress.json` nach der aktuellen Liste (gleicher Feed wie im Plugin-Kern der Themes).
 2. Antwortet die Adresse nicht, nutzt es die mitgelieferte Liste in `mgd-ebook/includes/plugin-catalog/plugins.json`.
-3. Die Liste wird bis zu 6 Stunden zwischengespeichert. Der Knopf **Katalog aktualisieren** holt sie sofort neu.
+3. Die Liste wird bis zu 15 Minuten zwischengespeichert. Der Knopf **Katalog aktualisieren** holt sie sofort neu.
 
 ## Ein neues Plugin in die Liste aufnehmen
 
