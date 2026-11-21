@@ -52,12 +52,12 @@ $total = (int) $query->found_posts;
             $url = MGD_Ebook_Library::file_url( $id );
             $shortcode = '[mgd_ebook id="' . $id . '"]';
             ?>
-            <article class="mgd-ebook-admin__card">
+            <article class="mgd-ebook-admin__card" data-mgd-card="<?php echo $id; ?>">
                 <div class="mgd-ebook-admin__card-head">
                     <?php if ( $cover ) : ?>
-                        <img class="mgd-ebook-admin__cover" src="<?php echo esc_url( $cover ); ?>" alt="" width="72" loading="lazy">
+                        <img class="mgd-ebook-admin__cover" data-mgd-cover-img src="<?php echo esc_url( $cover ); ?>" alt="" width="72" loading="lazy">
                     <?php else : ?>
-                        <span class="mgd-ebook-admin__cover mgd-ebook-admin__cover--none" aria-hidden="true"><?php echo esc_html( mb_substr( $title, 0, 1 ) ); ?></span>
+                        <span class="mgd-ebook-admin__cover mgd-ebook-admin__cover--none" data-mgd-cover-img aria-hidden="true"><?php echo esc_html( mb_substr( $title, 0, 1 ) ); ?></span>
                     <?php endif; ?>
                     <div>
                         <h3><?php echo esc_html( $title ); ?></h3>
@@ -83,6 +83,7 @@ $total = (int) $query->found_posts;
 
                 <div class="mgd-ebook-admin__actions">
                     <a href="<?php echo esc_url( $url ); ?>" download>Datei laden</a>
+                    <button type="button" class="mgd-ebook-admin__link" data-mgd-cover-edit data-book="<?php echo $id; ?>" data-title="<?php echo esc_attr( $title ); ?>" data-cover="<?php echo esc_url( $cover ); ?>">Cover ändern</button>
                     <?php if ( current_user_can( 'delete_post', $id ) ) : ?>
                         <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-mgd-confirm="<?php echo esc_attr( '„' . $title . '“ endgültig löschen? Das kann nicht rückgängig gemacht werden. Links und Shortcodes dazu funktionieren danach nicht mehr.' ); ?>">
                             <?php wp_nonce_field( 'mgd_ebook_delete_' . $id ); ?>
@@ -109,6 +110,29 @@ $total = (int) $query->found_posts;
             <?php echo \Mgd\Ebook\Install\Platform\WordPress::settingsHtml( 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION ); // phpcs:ignore WordPress.Security.EscapeOutput -- Client escaped selbst ?>
         </section>
     <?php endif; ?>
+
+    <?php // Mini-Editor fuer das Cover (wird per JavaScript geoeffnet) ?>
+    <div class="mgd-ebook-editor" data-mgd-editor role="dialog" aria-modal="true" aria-labelledby="mgd-ebook-editor-title" hidden>
+        <div class="mgd-ebook-editor__box">
+            <h2 id="mgd-ebook-editor-title">Cover ändern</h2>
+            <p class="mgd-ebook-editor__book" data-mgd-editor-book></p>
+            <p class="description">Wähle ein Bild aus der Mediathek (oder lade dort ein neues hoch). Verschiebe das Bild mit der Maus oder den Pfeiltasten und stelle mit dem Regler die Größe ein. Der Rahmen zeigt den späteren Ausschnitt.</p>
+            <div class="mgd-ebook-editor__stage" data-mgd-stage tabindex="0" aria-label="Ausschnitt. Pfeiltasten verschieben das Bild, Plus und Minus ändern die Größe.">
+                <img alt="" data-mgd-editor-img draggable="false" hidden>
+                <p class="mgd-ebook-editor__empty" data-mgd-editor-empty>Noch kein Bild gewählt</p>
+            </div>
+            <p class="mgd-ebook-editor__zoom"><label for="mgd-ebook-zoom">Größe</label> <input id="mgd-ebook-zoom" type="range" min="1" max="4" step="0.01" value="1" data-mgd-zoom disabled></p>
+            <p class="mgd-ebook-editor__tools">
+                <button type="button" class="button" data-mgd-pick>Bild aus Mediathek wählen …</button>
+                <button type="button" class="button-link" data-mgd-restore>Original aus der EPUB wiederherstellen</button>
+            </p>
+            <p class="mgd-ebook-editor__status" role="status" data-mgd-status></p>
+            <p class="mgd-ebook-editor__footer">
+                <button type="button" class="button button-primary" data-mgd-save disabled>Cover speichern</button>
+                <button type="button" class="button" data-mgd-cancel>Abbrechen</button>
+            </p>
+        </div>
+    </div>
 
     <?php // Hilfe einklappbar, damit die Seite ruhig bleibt ?>
     <details class="mgd-ebook-admin__help">

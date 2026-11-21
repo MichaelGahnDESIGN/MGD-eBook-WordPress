@@ -14,6 +14,9 @@ final class MGD_Ebook_Admin {
         add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
         add_action( 'admin_post_mgd_ebook_upload', array( $this, 'upload' ) );
         add_action( 'admin_post_mgd_ebook_delete', array( $this, 'delete' ) );
+        // Cover aendern (Editor schickt per AJAX)
+        add_action( 'wp_ajax_mgd_ebook_cover', array( $this, 'ajax_cover' ) );
+        add_action( 'wp_ajax_mgd_ebook_cover_reset', array( $this, 'ajax_cover_reset' ) );
         // Pluginempfehlung "Weitere Plugins" als Unterpunkt
         ( new MGD_WordPress_Plugin_Catalog_V4() )->register( self::PAGE );
     }
@@ -26,7 +29,13 @@ final class MGD_Ebook_Admin {
     public function assets( string $hook ): void {
         if ( 'toplevel_page_' . self::PAGE !== $hook ) { return; }
         wp_enqueue_style( 'mgd-ebook-admin', MGD_EBOOK_URL . 'assets/ebook-admin.css', array(), MGD_EBOOK_VERSION );
+        // Mediathek-Fenster fuer die Cover-Auswahl
+        wp_enqueue_media();
         wp_enqueue_script( 'mgd-ebook-admin', MGD_EBOOK_URL . 'assets/ebook-admin.js', array(), MGD_EBOOK_VERSION, true );
+        wp_localize_script( 'mgd-ebook-admin', 'mgdEbook', array(
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'nonce' => wp_create_nonce( 'mgd_ebook_cover' ),
+        ) );
     }
 
     // Seite: Uploader oben, Liste darunter
@@ -84,6 +93,43 @@ final class MGD_Ebook_Admin {
         $deleted = wp_delete_attachment( $id, true );
         $this->store_messages( array( $deleted ? array( 'success', $title . ' wurde gelöscht.' ) : array( 'error', $title . ' konnte nicht gelöscht werden.' ) ) );
         $this->back();
+    }
+
+    // Cover aus Mediathek-Bild oder aktuellem Cover neu zuschneiden
+    public function ajax_cover(): void {
+        $book_id = $this->ajax_book();
+        $source = sanitize_text_field( wp_unslash( $_POST['source'] ?? '' ) );
+        if ( 'current' === $source ) {
+            $path = MGD_Ebook_Library::cover_path( $book_id );
+        } else {
+            $image_id = absint( $source );
+            $path = '';
+            // nur echte Bilder (kein SVG), die der Benutzer sehen darf
+            if ( $image_id && wp_attachment_is_image( $image_id ) && current_user_can( 'read_post', $image_id )
+                && in_array( get_post_mime_type( $image_id ), array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' ), true ) ) {
+                $path = (string) get_attached_file( $image_id );
+            }
+        }
+        if ( '' === $path || ! is_file( $path ) ) { wp_send_json_error( array( 'message' => 'Das Bild wurde nicht gefunden.' ), 400 ); }
+        $crop = array();
+        foreach ( array( 'x', 'y', 'w', 'h' ) as $key ) { $crop[ $key ] = (float) ( $_POST[ $key ] ?? 0 ); }
+        $result = $this->library->set_cover_from_image( $book_id, $path, $crop );
+        if ( is_wp_error( $result ) ) { wp_send_json_error( array( 'message' => $result->get_error_message() ), 400 ); }
+        wp_send_json_success( array( 'url' => MGD_Ebook_Library::cover_url( $book_id ) ) );
+    }
+
+    public function ajax_cover_reset(): void {
+        $book_id = $this->ajax_book();
+        if ( ! $this->library->restore_cover( $book_id ) ) { wp_send_json_error( array( 'message' => 'Die EPUB-Datei konnte nicht gelesen werden.' ), 400 ); }
+        wp_send_json_success( array( 'url' => MGD_Ebook_Library::cover_url( $book_id ) ) );
+    }
+
+    /** Gemeinsame Pruefung der AJAX-Aufrufe. Gibt die ID des eBooks zurueck. */
+    private function ajax_book(): int {
+        check_ajax_referer( 'mgd_ebook_cover', 'nonce' );
+        $book_id = absint( $_POST['book_id'] ?? 0 );
+        if ( ! MGD_Ebook_Library::is_ebook( $book_id ) || ! current_user_can( 'edit_post', $book_id ) ) { wp_send_json_error( array( 'message' => 'Nicht berechtigt.' ), 403 ); }
+        return $book_id;
     }
 
     private function guard( string $nonce, string $capability ): void {

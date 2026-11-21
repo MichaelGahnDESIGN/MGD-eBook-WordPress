@@ -78,12 +78,62 @@ final class MGD_Ebook_Library {
         if ( '' === $tmp || false === file_put_contents( $tmp, $bytes ) ) { return ''; }
         $editor = wp_get_image_editor( $tmp );
         if ( is_wp_error( $editor ) ) { wp_delete_file( $tmp ); return ''; }
+        $stored = $this->write_cover( $editor, $attachment_id, IMAGETYPE_PNG === $info[2] );
+        wp_delete_file( $tmp );
+        return $stored;
+    }
+
+    /** Verkleinern und im Cover-Ordner speichern. Gibt den relativen Pfad zurueck, leer = Fehler. */
+    private function write_cover( WP_Image_Editor $editor, int $attachment_id, bool $keep_png ): string {
+        $uploads = wp_upload_dir();
+        $dir = trailingslashit( $uploads['basedir'] ) . self::COVER_DIR;
+        if ( ! empty( $uploads['error'] ) || ! wp_mkdir_p( $dir ) ) { return ''; }
         $editor->resize( self::COVER_MAX_WIDTH, self::COVER_MAX_HEIGHT, false );
-        $keep_png = IMAGETYPE_PNG === $info[2];
         $name = $attachment_id . '-' . wp_generate_password( 8, false, false ) . ( $keep_png ? '.png' : '.jpg' );
         $saved = $editor->save( $dir . '/' . $name, $keep_png ? 'image/png' : 'image/jpeg' );
-        wp_delete_file( $tmp );
         return is_wp_error( $saved ) ? '' : self::COVER_DIR . '/' . $name;
+    }
+
+    /**
+     * Eigenes Cover: Ausschnitt aus einem Bild (Werte 0 bis 1, relativ zur Bildgroesse).
+     *
+     * @param array{x:float,y:float,w:float,h:float} $crop
+     */
+    public function set_cover_from_image( int $book_id, string $source_path, array $crop ): bool|WP_Error {
+        $editor = wp_get_image_editor( $source_path );
+        if ( is_wp_error( $editor ) ) { return new WP_Error( 'mgd_ebook_cover_image', 'Dieses Bild kann nicht verarbeitet werden.' ); }
+        $size = $editor->get_size();
+        $width = (int) $size['width'];
+        $height = (int) $size['height'];
+        $x = max( 0.0, min( 1.0, (float) $crop['x'] ) );
+        $y = max( 0.0, min( 1.0, (float) $crop['y'] ) );
+        $sx = (int) round( $x * $width );
+        $sy = (int) round( $y * $height );
+        $sw = min( $width - $sx, (int) round( max( 0.0, min( 1.0, (float) $crop['w'] ) ) * $width ) );
+        $sh = min( $height - $sy, (int) round( max( 0.0, min( 1.0, (float) $crop['h'] ) ) * $height ) );
+        if ( $sw < 20 || $sh < 20 ) { return new WP_Error( 'mgd_ebook_cover_crop', 'Der gewählte Ausschnitt ist zu klein.' ); }
+        $cropped = $editor->crop( $sx, $sy, $sw, $sh );
+        if ( is_wp_error( $cropped ) ) { return new WP_Error( 'mgd_ebook_cover_crop', 'Der Ausschnitt konnte nicht berechnet werden.' ); }
+        $stored = $this->write_cover( $editor, $book_id, 'png' === strtolower( pathinfo( $source_path, PATHINFO_EXTENSION ) ) );
+        if ( '' === $stored ) { return new WP_Error( 'mgd_ebook_cover_save', 'Das Cover konnte nicht gespeichert werden.' ); }
+        // erst jetzt das alte Cover entfernen
+        $this->remove_cover( $book_id );
+        update_post_meta( $book_id, self::META_COVER, $stored );
+        return true;
+    }
+
+    /** Original-Cover aus der EPUB-Datei wieder einlesen. */
+    public function restore_cover( int $book_id ): bool {
+        return $this->index( $book_id );
+    }
+
+    /** Voller Dateipfad des aktuellen Covers (leer = keins). */
+    public static function cover_path( int $attachment_id ): string {
+        $relative = (string) get_post_meta( $attachment_id, self::META_COVER, true );
+        if ( '' === $relative || 0 !== strpos( $relative, self::COVER_DIR . '/' ) || false !== strpos( $relative, '..' ) ) { return ''; }
+        $uploads = wp_upload_dir();
+        $path = trailingslashit( $uploads['basedir'] ) . $relative;
+        return is_file( $path ) ? $path : '';
     }
 
     public function cleanup( int $attachment_id ): void {

@@ -22,7 +22,11 @@
 Jede EPUB-Datei ist ein normaler **Anhang** in der WordPress-Mediathek (Typ `application/epub+zip`). Zusatzdaten stehen in zwei Metafeldern:
 
 - `_mgd_ebook`: Titel, Autor, Beschreibung, Sprache
-- `_mgd_ebook_cover`: Pfad zum Cover unter `uploads/mgd-ebook-covers/`
+- `_mgd_ebook_cover`: Pfad zum Cover unter `uploads/mgd-ebook-covers/` (aus der EPUB oder vom Benutzer zugeschnitten)
+
+## Cover-Editor
+
+Der Editor ist reines JavaScript in `assets/ebook-admin.js` (keine Bibliothek). Er schickt den Ausschnitt als Brüche (0 bis 1, relativ zur Bildgröße) per AJAX (`mgd_ebook_cover`) an den Server. Der Server schneidet mit dem WordPress-Bildeditor zu (`MGD_Ebook_Library::set_cover_from_image`). Die Mediathek kommt von `wp_enqueue_media()`. Der Editor ist bewusst keine `<dialog>`, weil das WordPress-Mediathek-Fenster sonst hinter ihm läge.
 
 Darum erscheinen EPUB-Dateien auch in der normalen Mediathek, und der Divi Editor findet sie dort.
 

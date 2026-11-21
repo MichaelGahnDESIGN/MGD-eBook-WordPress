@@ -28,21 +28,21 @@ function check( string $name, bool $ok ): void {
 	$fails += $ok ? 0 : 1;
 }
 
-$c = WordPress::client( 'mgd-ebook', 'wordpress', '0.2.0' );
+$c = WordPress::client( 'mgd-ebook', 'wordpress', '0.3.0' );
 check( 'Client wird gebaut (Produktname gültig)', null !== $c );
-check( 'Falscher Produktname gibt null statt Fehler', null === WordPress::client( 'Kaputt Name!', 'wordpress', '0.2.0' ) );
+check( 'Falscher Produktname gibt null statt Fehler', null === WordPress::client( 'Kaputt Name!', 'wordpress', '0.3.0' ) );
 check( 'Schalter ab Werk an', $c->isEnabled() );
-$html = WordPress::settingsHtml( 'mgd-ebook', 'wordpress', '0.2.0' );
+$html = WordPress::settingsHtml( 'mgd-ebook', 'wordpress', '0.3.0' );
 check( 'Einstellungen zeigen Schalter angehakt', str_contains( $html, 'mgd_install_report_mgd_ebook' ) && str_contains( $html, 'checked' ) );
 check( 'Einstellungen zeigen freigegebenen Hinweistext', str_contains( $html, htmlspecialchars( Settings::HINT, ENT_QUOTES ) ) );
 check( 'Einstellungen haben Nonce-Feld', str_contains( $html, '_mgd_install_nonce' ) );
 $c->setEnabled( false );
-check( 'Schalter aus wird gespeichert', ! WordPress::client( 'mgd-ebook', 'wordpress', '0.2.0' )->isEnabled() );
+check( 'Schalter aus wird gespeichert', ! WordPress::client( 'mgd-ebook', 'wordpress', '0.3.0' )->isEnabled() );
 check( 'Schalter aus: ping sendet nichts', false === $c->ping( true ) );
 $c->setEnabled( true );
-check( 'Schalter wieder an', WordPress::client( 'mgd-ebook', 'wordpress', '0.2.0' )->isEnabled() );
+check( 'Schalter wieder an', WordPress::client( 'mgd-ebook', 'wordpress', '0.3.0' )->isEnabled() );
 check( 'Status ist eigene Option ohne Autoload', isset( $GLOBALS['opts']['mgd_install_mgd_ebook'] ) );
-WordPress::boot( __FILE__, 'mgd-ebook', 'wordpress', '0.2.0', 'https://x/wp-admin/admin.php?page=mgd-ebook' );
+WordPress::boot( __FILE__, 'mgd-ebook', 'wordpress', '0.3.0', 'https://x/wp-admin/admin.php?page=mgd-ebook' );
 check( 'boot hängt sich an admin_init und admin_notices', isset( $GLOBALS['hooks']['admin_init'], $GLOBALS['hooks']['admin_notices'], $GLOBALS['hooks']['activate'] ) );
 
 // freigegebene Texte wörtlich (Michael, 18.11.2026)
