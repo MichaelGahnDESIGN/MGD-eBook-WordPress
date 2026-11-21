@@ -22,7 +22,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
 ## Installieren (Schritt für Schritt)
 
-1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.4.1.zip` (die Zahl ändert sich).
+1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.4.2.zip` (die Zahl ändert sich).
 2. Öffne in WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Wähle die ZIP-Datei aus und klicke auf **Jetzt installieren**.
 4. Klicke auf **Plugin aktivieren**.
@@ -100,7 +100,7 @@ In der Liste auf **Löschen** klicken und die Rückfrage bestätigen. Die Datei 
 
 ## Weitere Plugins
 
-Unter **eBook → Info und Updates** zeigt das Plugin andere MGD-Plugins als Karten (Pluginempfehlung). Der Link „Mehr erfahren“ führt zu theme.michael-gahn.de. Es wird nichts automatisch installiert.
+Unter **eBook → Info und Updates** zeigt das Plugin andere MGD-Plugins als Karten (Pluginempfehlung), mit Bildern, Kategorien, Suche und Filtern. Mit **Details** siehst du mehr. Mit **Installieren** wird ein kostenloses Plugin installiert, aber **nie automatisch aktiviert**. Den Knopf sehen nur Administratoren.
 
 ## Wenn etwas nicht klappt
 

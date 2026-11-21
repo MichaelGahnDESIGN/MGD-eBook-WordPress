@@ -1,5 +1,11 @@
 # Änderungen
 
+## 0.4.2 – Neue Ansicht „Weitere Plugins“
+
+- **Weitere Plugins** (unter **eBook → Info und Updates**) sieht jetzt aus wie die MGD Plugin-Kollektion: Bilder, Kategorien, Suche, Filter und ein Fenster mit Details.
+- Neu: Knopf **Installieren** bei kostenlosen Plugins (nur für Administratoren). Die Datei wird vor der Installation geprüft. Das Plugin wird nie automatisch aktiviert.
+- Die alte Seite „Weitere Plugins“ ist ganz entfernt.
+
 ## 0.4.1 – Cover wird wieder erkannt
 
 - Behoben: Auf Websites mit einem Bild-Plugin, das Bilder automatisch in AVIF oder WebP umwandelt (zum Beispiel „Modern Image Formats“ oder EWWW), stand bei jedem eBook „kein Cover in der Datei“. Das Cover wurde zwar gespeichert, aber unter einem anderen Dateinamen. Jetzt bleibt das Cover PNG oder JPEG und wird gefunden. Das gilt auch für **Cover ändern**.

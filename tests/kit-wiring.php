@@ -25,6 +25,9 @@ check( 'Alter Updater wird nicht mehr registriert', ! str_contains( $main, 'MGD_
 check( 'Alter Install-Client wird nicht mehr gestartet', ! str_contains( $main, 'Install\\Platform\\WordPress::boot' ) );
 check( 'Alte Admin-Tools (GitHub-Updater) sind aus', ! str_contains( $main, 'MGD_Plugin_Admin_Tools_20261023::register' ) );
 check( 'Alte Seite Weitere Plugins ist aus', ! str_contains( $admin, 'MGD_WordPress_Plugin_Catalog_V4' ) );
+check( 'Alte Katalog-Datei ist ganz entfernt', ! is_file( $root . 'includes/class-mgd-wordpress-plugin-catalog.php' ) && ! str_contains( $main, 'class-mgd-wordpress-plugin-catalog.php' ) );
+check( 'Knopf Installieren schon in admin_init angemeldet (für admin-post.php)', str_contains( $admin, "add_action( 'admin_init', array( \$this, 'catalog_actions' ) )" ) && str_contains( $admin, "Setup::catalogActions( 'mgd-ebook'" ) );
+check( 'Neue Kollektion-Ansicht im Baukasten', is_file( $root . 'includes/Kit/Platform/WordPress/assets/kit-catalog.css' ) && is_file( $root . 'includes/Kit/Platform/WordPress/CatalogInstaller.php' ) );
 check( 'Seite Info und Updates (Dashboard) ist da', str_contains( $admin, "'mgd-ebook-plugins'" ) && str_contains( $admin, "Setup::dashboard( 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', MGD_Ebook_Plugin::\$updater, \$list, false, '' )" ) );
 check( 'Empfehlungen blenden eBook selbst aus', str_contains( $admin, "Setup::recommendations( 'mgd-ebook', 'wordpress', 'mgd-ebook', \$this->fallback_plugins(), 'MGD-eBook-WordPress' )" ) );
 check( 'Alter Schalter nicht mehr doppelt auf der eBook-Seite', ! str_contains( $tpl, 'settingsHtml' ) );

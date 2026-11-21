@@ -128,7 +128,7 @@
   "MGD-WordPress-Login": {
     "name": "MGD WordPress Login",
     "description": "Ein schöner Login für WordPress: 8 Layouts (neu: Kosmos) mit wählbaren Effekten wie Partikeln, Lichtkegeln, Karten-Effekten und Position. Eigene Farben, Logo und Hintergrund, Live-Vorschau im Backend. Ohne externe Dienste und ohne Tracking.",
-    "category": "Sicherheit",
+    "category": "Administration",
     "icon": "generic.svg",
     "tone": "mint",
     "features": [],

@@ -12,7 +12,7 @@
 | `templates/` | HTML für Backend-Seite und Shortcode |
 | `assets/` | CSS und JavaScript |
 | `includes/Kit/` | Baukasten: Updates, Installation melden, Weitere Plugins, Seite „Info und Updates“. Erzeugt mit `php bin/build-plugin-kit.php mgd-ebook --platform=wordpress --namespace='Mgd\Ebook\Kit' --dir=includes/Kit` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
-| `includes/class-mgd-ebook-updater.php`, `includes/install-client/`, `includes/class-mgd-plugin-admin-tools.php`, `includes/class-mgd-wordpress-plugin-catalog.php` | Alte Bausteine bis 0.3.0. Werden nicht mehr geladen, kommen in einer späteren Version raus |
+| `includes/class-mgd-ebook-updater.php`, `includes/install-client/`, `includes/class-mgd-plugin-admin-tools.php` | Alte Bausteine bis 0.3.0. Werden nicht mehr geladen, kommen in einer späteren Version raus |
 | `uninstall.php` | Meldet beim Löschen bei theme.michael-gahn.de ab und entfernt die Baukasten-Daten. eBooks bleiben |
 | `includes/plugin-catalog/`, `assets/plugin-catalog/` | Pluginempfehlung (in allen MGD-Plugins gleich) |
 
