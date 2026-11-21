@@ -1,0 +1,39 @@
+# Lokale Test-WordPress fuer MGD eBook: docker compose -f tests/compose.yaml up -d
+name: mgd-ebook-test
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: wp
+      MARIADB_USER: wp
+      MARIADB_PASSWORD: wp
+      MARIADB_ROOT_PASSWORD: root
+    tmpfs: [/var/lib/mysql]
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      retries: 30
+  wp:
+    image: wordpress:php8.3-apache
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wp
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: wp
+      WORDPRESS_DEBUG: "1"
+    ports: ["8089:80"]
+    volumes:
+      - ../mgd-ebook:/var/www/html/wp-content/plugins/mgd-ebook:ro
+  cli:
+    image: wordpress:cli-php8.3
+    depends_on: [wp]
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wp
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: wp
+    volumes_from: [wp]
+    entrypoint: ["sleep", "infinity"]

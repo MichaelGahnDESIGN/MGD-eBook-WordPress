@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "platform": "wordpress",
+  "channel": "github",
+  "runtime": "mgd-ebook",
+  "packageRoot": "mgd-ebook",
+  "externalCatalog": true,
+  "icon": "mgd-ebook/assets/mgd-plugin-icon.svg",
+  "readme": "README.md",
+  "changelog": "CHANGELOG.md",
+  "documentation": "docs/WORDPRESS-VERWALTUNG.md"
+}

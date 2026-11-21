@@ -1,0 +1,11 @@
+/* MGD eBook Backend */
+.mgd-ebook-admin { max-width: 1400px; }
+.mgd-ebook-admin__intro { max-width: 70ch; font-size: 14px; }
+.mgd-ebook-admin__box { background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #b51f2a; padding: 4px 20px 16px; margin: 16px 0 28px; max-width: 760px; }
+.mgd-ebook-admin__table td { vertical-align: top; }
+.mgd-ebook-admin__cover { width: 72px; }
+.mgd-ebook-admin__cover img { display: block; height: auto; border-radius: 3px; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+.mgd-ebook-admin__nocover { display: inline-block; width: 56px; padding: 18px 4px; font-size: 11px; text-align: center; background: #f0f0f1; border-radius: 3px; color: #50575e; }
+.mgd-ebook-admin__field { width: 100%; max-width: 360px; margin-bottom: 4px; font-family: Menlo, Consolas, monospace; font-size: 12px; }
+.mgd-ebook-admin__delete { display: inline-block; margin-left: 6px; }
+.mgd-ebook-admin__help li { margin-bottom: 6px; max-width: 80ch; }
