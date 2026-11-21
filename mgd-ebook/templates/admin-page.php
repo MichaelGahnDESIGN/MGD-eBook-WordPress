@@ -102,6 +102,14 @@ $total = (int) $query->found_posts;
         <?php endif; ?>
     <?php endif; ?>
 
+    <?php // Free-Lizenz Schalter, nur für Admins (Meldung läuft eh nur mit manage_options) ?>
+    <?php if ( current_user_can( 'manage_options' ) ) : ?>
+        <section class="mgd-ebook-admin__panel mgd-ebook-admin__install" id="mgd-ebook-install" aria-labelledby="mgd-ebook-install-title">
+            <h2 id="mgd-ebook-install-title">Installation melden</h2>
+            <?php echo \Mgd\Ebook\Install\Platform\WordPress::settingsHtml( 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION ); // phpcs:ignore WordPress.Security.EscapeOutput -- Client escaped selbst ?>
+        </section>
+    <?php endif; ?>
+
     <?php // Hilfe einklappbar, damit die Seite ruhig bleibt ?>
     <details class="mgd-ebook-admin__help">
         <summary>So benutzt du es</summary>

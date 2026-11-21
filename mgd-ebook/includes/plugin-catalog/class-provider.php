@@ -6,8 +6,10 @@ require_once __DIR__ . '/class-media.php';
 /** Öffentliche Metadaten im Cache; lokale Installation und Rechte immer frisch ermitteln. */
 final class MGD_Catalog_V4_Provider {
     private const OWNER = 'MichaelGahnDESIGN';
-    private const FEED = 'https://theme.michael-gahn.de/api/catalog/plugins.json';
-    private const CACHE = 'mgd_wordpress_catalog_v3';
+    // Empfehlungs-Feed wie Pro Plugin-Kern (2d11b97) > /api/v1/recommendations, 15 Min Cache
+    private const FEED = 'https://theme.michael-gahn.de/api/v1/recommendations/wordpress.json';
+    private const CACHE = 'mgd_wordpress_catalog_v4';
+    private const TTL = 900;
 
     public function catalog( bool $refresh = false ): array {
         $cached = get_transient( self::CACHE );
@@ -61,7 +63,7 @@ final class MGD_Catalog_V4_Provider {
         // nicht mehr genutzte Bilder aufräumen
         if ( $central ) { MGD_Catalog_V4_Media::prune( array_merge( array_column( $items, 'icon_file' ), array_column( $items, 'image_file' ) ) ); }
         $catalog = array( 'items' => array_values( $items ), 'source' => $central ? 'central' : 'fallback', 'checked_at' => time() );
-        set_transient( self::CACHE, $catalog, 6 * HOUR_IN_SECONDS );
+        set_transient( self::CACHE, $catalog, self::TTL );
         return $catalog;
     }
 

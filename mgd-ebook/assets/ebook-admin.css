@@ -94,3 +94,8 @@
   .mgd-ebook-admin__hero { flex-direction: column; align-items: flex-start; }
   .mgd-ebook-admin__grid { grid-template-columns: 1fr; }
 }
+
+/* Free-Lizenz Schalter  */
+.mgd-ebook-admin__install label { font-weight: 600; }
+.mgd-ebook-admin__install .description { max-width: 62ch; }
+.mgd-ebook-admin__install form > p:last-of-type { margin-bottom: 12px; }

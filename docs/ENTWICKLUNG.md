@@ -11,7 +11,10 @@
 | `includes/class-mgd-ebook-renderer.php` | Shortcode `[mgd_ebook]` |
 | `templates/` | HTML für Backend-Seite und Shortcode |
 | `assets/` | CSS und JavaScript |
-| `includes/class-mgd-plugin-admin-tools.php` | Gemeinsamer GitHub-Updater (in allen MGD-Plugins gleich) |
+| `includes/class-mgd-ebook-updater.php` | Updates über theme.michael-gahn.de mit Prüfsumme (wie MGD WordPress Login) |
+| `includes/install-client/` | Installation melden (Free-Lizenz). Erzeugt mit `php bin/build-install-client.php` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
+| `includes/class-mgd-plugin-admin-tools.php` | Plugin-Links, Details und Knopf „MGD-Updates jetzt prüfen“ (in allen MGD-Plugins gleich) |
+| `uninstall.php` | Entfernt beim Löschen nur den Melde-Status |
 | `includes/plugin-catalog/`, `assets/plugin-catalog/` | Pluginempfehlung (in allen MGD-Plugins gleich) |
 
 ## Wie werden Daten gespeichert?
@@ -26,7 +29,10 @@ Darum erscheinen EPUB-Dateien auch in der normalen Mediathek, und der Divi Edito
 ## Tests
 
 ```bash
-php tests/epub-parser.php
+php tests/epub-parser.php    # EPUB lesen
+php tests/updater.php        # Update-Weg und Prüfsumme
+php tests/install.php        # Installation melden, Schalter aus/an
+php tests/catalog-feed.php   # Empfehlungs-Feed (Adresse, 15 Minuten Cache)
 ```
 
 Der Test baut künstliche EPUB-Dateien (gültig, ohne Cover, defekt, mit Pfad-Tricks, mit XML-Entitäten, mit riesigem Cover) und prüft den Parser. Er braucht kein WordPress.
