@@ -21,5 +21,6 @@ jobs:
       - run: php tests/updater.php
       - run: php tests/install.php
       - run: php tests/catalog-feed.php
+      - run: php tests/kit-wiring.php
       - run: python3 scripts/check-docs.py
       - run: python3 scripts/build-package.py

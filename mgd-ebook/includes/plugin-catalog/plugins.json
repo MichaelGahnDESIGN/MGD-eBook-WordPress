@@ -14,6 +14,7 @@
       "mgd-ai-image-labels/mgd-ai-image-labels.php"
     ],
     "repository": "MGD-AI-Kennzeichnung-WordPress",
+    "slug": "plugin-ki-kennzeichnung-wordpress",
     "tier": "free"
   },
   "MGD-Maintenance-WordPress": {
@@ -31,6 +32,7 @@
       "mg-maintenance-studio/mg-maintenance-studio.php"
     ],
     "repository": "MGD-Maintenance-WordPress",
+    "slug": "plugin-maintenance-wordpress",
     "tier": "free"
   },
   "MGD-Barrierefrei-WordPress": {
@@ -48,6 +50,7 @@
       "mgd-barrierefrei-wordpress/mgd-barrierefrei-wordpress.php"
     ],
     "repository": "MGD-Barrierefrei-WordPress",
+    "slug": "plugin-barrierefrei-wordpress",
     "tier": "free"
   },
   "MGD-Share-WordPress": {
@@ -65,6 +68,7 @@
       "mgd-share-wordpress/mgd-share-wordpress.php"
     ],
     "repository": "MGD-Share-WordPress",
+    "slug": "plugin-share-wordpress",
     "tier": "free"
   },
   "MGD-Notification-WordPress": {
@@ -82,6 +86,7 @@
       "mgd-notification-center/mgd-notification-center.php"
     ],
     "repository": "MGD-Notification-WordPress",
+    "slug": "plugin-notification-wordpress",
     "tier": "free"
   },
   "MGD_Giveaway_WP-Plugin": {
@@ -99,6 +104,7 @@
       "mgd-giveaway/mgd-giveaway.php"
     ],
     "repository": "MGD_Giveaway_WP-Plugin",
+    "slug": "plugin-giveaway-wordpress",
     "tier": "free"
   },
   "MGD_WordPress-MCP": {
@@ -116,23 +122,21 @@
       "mgd-wordpress-mcp/mgd-wordpress-mcp.php"
     ],
     "repository": "MGD_WordPress-MCP",
+    "slug": "plugin-wordpress-mcp",
     "tier": "free"
   },
-  "MGD-eBook-WordPress": {
-    "name": "eBook",
-    "description": "Lade EPUB-Dateien hoch und biete sie als Download an. Mit Cover-Anzeige, Vorschau-Fenster und fertigem Shortcode.",
-    "category": "Medien",
-    "icon": "ebook.svg",
-    "tone": "sand",
-    "features": [
-      "EPUB-Dateien hochladen und verwalten",
-      "Link und Shortcode pro Datei",
-      "Cover mit Vorschau und Download"
-    ],
+  "MGD-WordPress-Login": {
+    "name": "MGD WordPress Login",
+    "description": "Ein schöner Login für WordPress: 8 Layouts (neu: Kosmos) mit wählbaren Effekten wie Partikeln, Lichtkegeln, Karten-Effekten und Position. Eigene Farben, Logo und Hintergrund, Live-Vorschau im Backend. Ohne externe Dienste und ohne Tracking.",
+    "category": "Sicherheit",
+    "icon": "generic.svg",
+    "tone": "mint",
+    "features": [],
     "basenames": [
-      "mgd-ebook/mgd-ebook.php"
+      "mgd-wordpress-login/mgd-wordpress-login.php"
     ],
-    "repository": "MGD-eBook-WordPress",
+    "repository": "MGD-WordPress-Login",
+    "slug": "plugin-login-wordpress",
     "tier": "free"
   }
 }

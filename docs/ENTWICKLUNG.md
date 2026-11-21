@@ -11,10 +11,9 @@
 | `includes/class-mgd-ebook-renderer.php` | Shortcode `[mgd_ebook]` |
 | `templates/` | HTML für Backend-Seite und Shortcode |
 | `assets/` | CSS und JavaScript |
-| `includes/class-mgd-ebook-updater.php` | Updates über theme.michael-gahn.de mit Prüfsumme (wie MGD WordPress Login) |
-| `includes/install-client/` | Installation melden (Free-Lizenz). Erzeugt mit `php bin/build-install-client.php` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
-| `includes/class-mgd-plugin-admin-tools.php` | Plugin-Links, Details und Knopf „MGD-Updates jetzt prüfen“ (in allen MGD-Plugins gleich) |
-| `uninstall.php` | Entfernt beim Löschen nur den Melde-Status |
+| `includes/Kit/` | Baukasten: Updates, Installation melden, Weitere Plugins, Seite „Info und Updates“. Erzeugt mit `php bin/build-plugin-kit.php mgd-ebook --platform=wordpress --namespace='Mgd\Ebook\Kit' --dir=includes/Kit` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
+| `includes/class-mgd-ebook-updater.php`, `includes/install-client/`, `includes/class-mgd-plugin-admin-tools.php`, `includes/class-mgd-wordpress-plugin-catalog.php` | Alte Bausteine bis 0.3.0. Werden nicht mehr geladen, kommen in einer späteren Version raus |
+| `uninstall.php` | Meldet beim Löschen bei theme.michael-gahn.de ab und entfernt die Baukasten-Daten. eBooks bleiben |
 | `includes/plugin-catalog/`, `assets/plugin-catalog/` | Pluginempfehlung (in allen MGD-Plugins gleich) |
 
 ## Wie werden Daten gespeichert?
@@ -37,6 +36,7 @@ php tests/epub-parser.php    # EPUB lesen
 php tests/updater.php        # Update-Weg und Prüfsumme
 php tests/install.php        # Installation melden, Schalter aus/an
 php tests/catalog-feed.php   # Empfehlungs-Feed (Adresse, 15 Minuten Cache)
+php tests/kit-wiring.php     # Baukasten angeschlossen, alte Updater aus
 ```
 
 Der Test baut künstliche EPUB-Dateien (gültig, ohne Cover, defekt, mit Pfad-Tricks, mit XML-Entitäten, mit riesigem Cover) und prüft den Parser. Er braucht kein WordPress.

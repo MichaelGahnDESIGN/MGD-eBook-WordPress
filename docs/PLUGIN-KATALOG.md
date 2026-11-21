@@ -1,6 +1,8 @@
 # Plugin-Empfehlung („Weitere Plugins“)
 
-Unter **eBook → Weitere Plugins** zeigt MGD eBook die anderen Plugins von Michael Gahn DESIGN. Das ist dieselbe Seite wie in den anderen MGD-Plugins.
+Unter **eBook → Info und Updates** zeigt MGD eBook die anderen Plugins von Michael Gahn DESIGN. Die Liste kommt seit Version 0.4.0 aus dem gemeinsamen Baukasten (`includes/Kit`), wie bei den anderen MGD-Plugins.
+
+⚠️ Der Rest dieser Seite beschreibt die alte Seite „Weitere Plugins“ bis Version 0.3.0. Die Dateien dafür liegen noch im Plugin, werden aber nicht mehr geladen. Sie kommen in einer späteren Version raus. Die mitgelieferte Ersatzliste `includes/plugin-catalog/plugins.json` nutzt der Baukasten weiter (Feld `slug` = Katalog-Kennung).
 
 ## Was kann die Seite?
 
