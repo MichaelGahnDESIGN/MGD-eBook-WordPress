@@ -3,6 +3,8 @@ defined( 'ABSPATH' ) || exit;
 
 /** Startet alle Teile des Plugins. */
 final class MGD_Ebook_Plugin {
+    public static ?\Mgd\Ebook\Kit\Platform\WordPress\Updater $updater = null;
+
     public static function boot(): void {
         $library = new MGD_Ebook_Library();
         $library->register();

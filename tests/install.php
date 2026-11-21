@@ -50,7 +50,7 @@ $short = 'Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin
 check( 'Schalter-Text wörtlich freigegeben', 'Installation bei Michael Gahn DESIGN melden' === Settings::LABEL );
 check( 'Kurztext im Plugin-Kopf', str_contains( file_get_contents( __DIR__ . '/../mgd-ebook/mgd-ebook.php' ), $short ) );
 check( 'Kurztext in der README', str_contains( file_get_contents( __DIR__ . '/../README.md' ), $short ) );
-check( 'Schalter auf der eBook-Seite eingebaut', str_contains( file_get_contents( __DIR__ . '/../mgd-ebook/templates/admin-page.php' ), "settingsHtml( 'mgd-ebook', 'wordpress'" ) );
+check( 'Schalter kommt über das Baukasten-Dashboard', str_contains( file_get_contents( __DIR__ . '/../mgd-ebook/includes/class-mgd-ebook-admin.php' ), "Setup::dashboard( 'mgd-ebook'" ) );
 
 echo $fails ? "\n$fails Fehler\n" : "\nAlles gut\n";
 exit( $fails ? 1 : 0 );

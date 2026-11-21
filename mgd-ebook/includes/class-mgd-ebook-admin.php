@@ -17,13 +17,13 @@ final class MGD_Ebook_Admin {
         // Cover aendern (Editor schickt per AJAX)
         add_action( 'wp_ajax_mgd_ebook_cover', array( $this, 'ajax_cover' ) );
         add_action( 'wp_ajax_mgd_ebook_cover_reset', array( $this, 'ajax_cover_reset' ) );
-        // Pluginempfehlung "Weitere Plugins" als Unterpunkt
-        ( new MGD_WordPress_Plugin_Catalog_V4() )->register( self::PAGE );
     }
 
     public function menu(): void {
         add_menu_page( 'eBook', 'eBook', 'upload_files', self::PAGE, array( $this, 'page' ), 'dashicons-book-alt', 25 );
         add_submenu_page( self::PAGE, 'eBooks', 'eBooks', 'upload_files', self::PAGE, array( $this, 'page' ) );
+        // Dashboard vom Baukasten: Info, Updates, Weitere Plugins, Installation melden
+        add_submenu_page( self::PAGE, 'Info und Updates', 'Info und Updates', 'manage_options', 'mgd-ebook-plugins', array( $this, 'plugins_page' ) );
     }
 
     public function assets( string $hook ): void {
@@ -46,6 +46,28 @@ final class MGD_Ebook_Admin {
         $messages = $this->take_messages();
         $max_upload = size_format( wp_max_upload_size() );
         require MGD_EBOOK_DIR . 'templates/admin-page.php';
+    }
+
+    public function plugins_page(): void {
+        if ( ! current_user_can( 'manage_options' ) ) { wp_die( 'Nicht berechtigt.', '', array( 'response' => 403 ) ); }
+        $list = \Mgd\Ebook\Kit\Platform\WordPress\Setup::recommendations( 'mgd-ebook', 'wordpress', 'mgd-ebook', $this->fallback_plugins(), 'MGD-eBook-WordPress' );
+        // parent leer = kein eigener Menüpunkt, Lizenz bleibt aus
+        $dash = \Mgd\Ebook\Kit\Platform\WordPress\Setup::dashboard( 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', MGD_Ebook_Plugin::$updater, $list, false, '' );
+        if ( null === $dash ) { echo '<div class="wrap"><p>Die Seite konnte gerade nicht geladen werden.</p></div>'; return; }
+        $dash->page();
+    }
+
+    // Ersatzliste aus plugin-catalog/plugins.json, falls theme.michael-gahn.de nicht antwortet
+    private function fallback_plugins(): array {
+        $raw = file_get_contents( MGD_EBOOK_DIR . 'includes/plugin-catalog/plugins.json' );
+        $data = is_string( $raw ) ? json_decode( $raw, true ) : null;
+        $out = array();
+        foreach ( is_array( $data ) ? $data : array() as $row ) {
+            if ( is_array( $row ) && ! empty( $row['slug'] ) ) {
+                $out[] = array( 'slug' => (string) $row['slug'], 'name' => (string) ( $row['name'] ?? '' ), 'description' => (string) ( $row['description'] ?? '' ), 'version' => '' );
+            }
+        }
+        return $out;
     }
 
     public function upload(): void {

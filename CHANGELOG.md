@@ -1,5 +1,12 @@
 # Änderungen
 
+## 0.4.0 – Gemeinsamer Baukasten
+
+- MGD eBook nutzt jetzt den gemeinsamen Baukasten der MGD-Plugins. Updates, die Meldung der Installation und die Empfehlungen laufen darüber.
+- Neue Seite **eBook → Info und Updates** (nur für Administratoren): Version, Update-Stand, Weitere Plugins und der Schalter „Installation bei Michael Gahn DESIGN melden“ auf einen Blick. Der Schalter steht nicht mehr unten auf der eBook-Seite.
+- Beim Löschen des Plugins meldet es sich bei theme.michael-gahn.de ab. Deine eBooks bleiben erhalten.
+- Die alte Seite „Weitere Plugins“ und der alte Updater sind abgeschaltet. Die gespeicherte Installations-ID bleibt erhalten.
+
 ## 0.3.0 – Gleicher Stand wie die anderen MGD-Plugins
 
 - Neu: Schalter **Installation bei Michael Gahn DESIGN melden** auf der Seite **eBook** (nur für Administratoren). Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.

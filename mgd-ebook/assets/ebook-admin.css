@@ -118,8 +118,3 @@
 .mgd-ebook-editor__status.is-error { color: #b32d2e; font-weight: 600; }
 .mgd-ebook-editor__footer { display: flex; gap: 8px; justify-content: flex-end; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid #d9e1dc; }
 body.mgd-ebook-editing { overflow: hidden; }
-
-/* Free-Lizenz Schalter  */
-.mgd-ebook-admin__install label { font-weight: 600; }
-.mgd-ebook-admin__install .description { max-width: 62ch; }
-.mgd-ebook-admin__install form > p:last-of-type { margin-bottom: 12px; }

@@ -22,7 +22,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
 ## Installieren (Schritt für Schritt)
 
-1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.3.0.zip` (die Zahl ändert sich).
+1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.4.0.zip` (die Zahl ändert sich).
 2. Öffne in WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Wähle die ZIP-Datei aus und klicke auf **Jetzt installieren**.
 4. Klicke auf **Plugin aktivieren**.
@@ -93,14 +93,14 @@ In der Liste auf **Löschen** klicken und die Rückfrage bestätigen. Die Datei 
 ## Datenschutz
 
 - Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
-- So schaltest du das ab: Menü **eBook** öffnen, unten bei **Installation melden** den Haken bei „Installation bei Michael Gahn DESIGN melden“ entfernen und **Speichern** klicken. Der Eintrag auf theme.michael-gahn.de wird dann gelöscht. Das Plugin funktioniert genauso weiter.
+- So schaltest du das ab: Menü **eBook → Info und Updates** öffnen, den Haken bei „Installation bei Michael Gahn DESIGN melden“ entfernen und **Speichern** klicken. Der Eintrag auf theme.michael-gahn.de wird dann gelöscht. Das Plugin funktioniert genauso weiter.
 - Den Schalter sehen nur Administratoren.
 - Für Updates und die Liste „Weitere Plugins“ fragt WordPress bei theme.michael-gahn.de und GitHub an. Dabei sehen die Server die Adresse (IP) deines Servers.
 - Beim Löschen des Plugins wird nur der Melde-Status entfernt. Deine eBooks bleiben in der Mediathek.
 
 ## Weitere Plugins
 
-Unter **eBook → Weitere Plugins** zeigt das Plugin andere MGD-Plugins zur Auswahl (Pluginempfehlung). Dort kannst du sie ansehen und bei Bedarf installieren. Nichts wird automatisch aktiviert.
+Unter **eBook → Info und Updates** zeigt das Plugin andere MGD-Plugins als Karten (Pluginempfehlung). Der Link „Mehr erfahren“ führt zu theme.michael-gahn.de. Es wird nichts automatisch installiert.
 
 ## Wenn etwas nicht klappt
 
@@ -121,6 +121,7 @@ php tests/epub-parser.php                           # Parser-Test
 php tests/updater.php                               # Test Update-Weg und Prüfsumme
 php tests/install.php                               # Test Installation melden (Free-Lizenz)
 php tests/catalog-feed.php                          # Test Empfehlungs-Feed
+php tests/kit-wiring.php                            # Test Baukasten-Einbau
 python3 scripts/build-package.py                    # ZIP bauen (landet in dist/)
 ```
 
