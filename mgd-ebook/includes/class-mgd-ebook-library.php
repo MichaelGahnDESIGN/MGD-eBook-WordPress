@@ -90,8 +90,23 @@ final class MGD_Ebook_Library {
         if ( ! empty( $uploads['error'] ) || ! wp_mkdir_p( $dir ) ) { return ''; }
         $editor->resize( self::COVER_MAX_WIDTH, self::COVER_MAX_HEIGHT, false );
         $name = $attachment_id . '-' . wp_generate_password( 8, false, false ) . ( $keep_png ? '.png' : '.jpg' );
-        $saved = $editor->save( $dir . '/' . $name, $keep_png ? 'image/png' : 'image/jpeg' );
-        return is_wp_error( $saved ) ? '' : self::COVER_DIR . '/' . $name;
+        // Bild-Plugins (Modern Image Formats, EWWW...) machen sonst still AVIF/WebP draus > Datei heißt anders, Cover weg
+        $keep_format = static fn(): array => array();
+        add_filter( 'image_editor_output_format', $keep_format, PHP_INT_MAX );
+        try {
+            $saved = $editor->save( $dir . '/' . $name, $keep_png ? 'image/png' : 'image/jpeg' );
+        } finally {
+            remove_filter( 'image_editor_output_format', $keep_format, PHP_INT_MAX );
+        }
+        return is_wp_error( $saved ) ? '' : self::saved_relative( $saved, $dir );
+    }
+
+    /** Echten Speicherort aus dem Editor nehmen, nur im Cover-Ordner und als Bild. Leer = nix brauchbares. */
+    private static function saved_relative( $saved, string $dir ): string {
+        $path = is_array( $saved ) ? (string) ( $saved['path'] ?? '' ) : '';
+        $file = basename( $path );
+        if ( '' === $path || dirname( $path ) !== rtrim( $dir, '/' ) || ! preg_match( '/^[A-Za-z0-9_-]+\.(png|jpe?g|webp|avif|gif)$/D', $file ) || ! is_file( $path ) ) { return ''; }
+        return self::COVER_DIR . '/' . $file;
     }
 
     /**
