@@ -1,5 +1,17 @@
 # Änderungen
 
+## 0.5.0 – Angaben, Leseprobe, Bücherregal und Download-Zähler
+
+- **Angaben bearbeiten:** Titel, Autor, Beschreibung, Reihe, Band, Verlag, Erscheinungsjahr, ISBN und Sprache lassen sich pro Buch ändern. Leere Felder nehmen den Wert aus der EPUB-Datei.
+- **Anzeige wählen:** Pro Buch einstellbar, welche Angaben im Vorschau-Fenster stehen (zum Beispiel Beschreibung an, ISBN aus).
+- **Leseprobe:** Pro Buch an oder aus, mit 1 bis 10 Seiten. Text und Bilder der ersten Seiten erscheinen im Vorschau-Fenster unter „Leseprobe lesen“. Eine reine Cover-Seite am Anfang wird übersprungen.
+- **Bücherregal:** `[mgd_ebook_regal ids="12,15,9"]` zeigt mehrere Bücher nebeneinander, `[mgd_ebook_regal reihe="…"]` alle Bücher einer Reihe nach Band sortiert.
+- **Download-Zähler:** Jedes Buch hat einen „Download-Link mit Zähler“. In der Liste steht, wie oft es heruntergeladen wurde, dazu eine Übersicht pro Monat. Gespeichert werden nur Zahlen, keine IP-Adressen, keine Cookies. Roboter und Link-Vorschauen zählen nicht mit. Der Download-Knopf im Vorschau-Fenster zählt automatisch.
+- **Datei ersetzen:** Neue Version eines Buchs hochladen. Link, Shortcode, Zähler und deine Angaben bleiben gleich.
+- **Hinweis bei großen Dateien:** Ab 20 MB gibt es einen Tipp, wie die Datei kleiner wird.
+- Leseerkennung: Verlag, Jahr, ISBN und Reihe werden jetzt auch aus der EPUB-Datei gelesen, wenn sie drinstehen.
+- Baukasten auf den neuen Stand gebracht.
+
 ## 0.4.2 – Neue Ansicht „Weitere Plugins“
 
 - **Weitere Plugins** (unter **eBook → Info und Updates**) sieht jetzt aus wie die MGD Plugin-Kollektion: Bilder, Kategorien, Suche, Filter und ein Fenster mit Details.

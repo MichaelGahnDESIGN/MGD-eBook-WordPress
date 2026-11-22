@@ -22,7 +22,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
 ## Installieren (Schritt für Schritt)
 
-1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.4.2.zip` (die Zahl ändert sich).
+1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.5.0.zip` (die Zahl ändert sich).
 2. Öffne in WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Wähle die ZIP-Datei aus und klicke auf **Jetzt installieren**.
 4. Klicke auf **Plugin aktivieren**.
@@ -44,7 +44,7 @@ Das Plugin liest beim Hochladen automatisch **Titel, Autor, Beschreibung und Cov
 ### Nur verlinken (zum Beispiel im Divi Editor)
 
 1. Gehe zu **eBook** und suche das Buch in der Liste.
-2. Klicke bei „Link zur Datei“ auf **Link kopieren**.
+2. Klicke bei „Download-Link mit Zähler“ auf **Kopieren**. Dann wird jeder Download gezählt. (Der „Direkte Link zur Datei“ geht auch, zählt aber nicht mit.)
 3. Öffne die Seite im Divi Editor. Wähle einen Button oder einen Text aus.
 4. Füge den Link als Ziel (URL) ein.
 
@@ -82,6 +82,44 @@ Das bisherige Cover kannst du im selben Fenster nochmal neu ausschneiden. Mit **
 
 Tipp: Bücher-Cover sind meist im Format 2 zu 3 (hoch). Der Rahmen hat dieses Format.
 
+### Bücherregal (mehrere Bücher nebeneinander)
+
+| Du schreibst | Das passiert |
+| --- | --- |
+| `[mgd_ebook_regal ids="12,15,9"]` | Drei Bücher nebeneinander, genau in dieser Reihenfolge |
+| `[mgd_ebook_regal reihe="Spuren & Stimmen aus Allverund"]` | Alle Bücher dieser Reihe, sortiert nach Band |
+| `[mgd_ebook_regal reihe="…" width="150"]` | Kleinere Cover |
+
+Die Reihe und den Band trägst du beim Buch unter **Angaben, Anzeige und Leseprobe** ein. Auf dem Handy stehen immer zwei Bücher nebeneinander.
+
+### Angaben ändern und auswählen, was angezeigt wird
+
+1. Klicke beim Buch auf **Angaben, Anzeige und Leseprobe**.
+2. Trage ein, was du ändern möchtest, zum Beispiel den richtigen Titel. Leere Felder nehmen den Wert aus der EPUB-Datei (er steht grau im Feld).
+3. Bei **Im Vorschau-Fenster anzeigen** hakst du an, was Besucher sehen sollen.
+4. Klicke auf **Speichern**.
+
+### Leseprobe
+
+1. Klicke beim Buch auf **Angaben, Anzeige und Leseprobe**.
+2. Haken bei **Leseprobe im Vorschau-Fenster zeigen** setzen und die Zahl der Seiten wählen (1 bis 10).
+3. **Speichern**. Das Plugin liest die Seiten einmal aus der Datei.
+
+Besucher sehen dann im Vorschau-Fenster **Leseprobe lesen**. Gezeigt werden Text und Bilder der ersten Seiten. Bei Büchern mit festem Seitenlayout (zum Beispiel aus Affinity) sieht das nicht genau aus wie im E-Book-Reader, aber alles ist lesbar.
+
+### Downloads zählen
+
+- Bei jedem Buch steht, wie oft es heruntergeladen wurde.
+- Unter **Downloads pro Monat** siehst du die letzten 12 Monate.
+- Es werden nur Zahlen gespeichert: keine IP-Adressen, keine Cookies. Suchmaschinen-Roboter und Link-Vorschauen (zum Beispiel WhatsApp) zählen nicht mit.
+
+### Neue Version eines Buchs hochladen
+
+1. Klicke beim Buch auf **Datei ersetzen**.
+2. Neue EPUB-Datei auswählen und **Datei ersetzen** klicken.
+
+Links, Shortcode, Zähler und deine Angaben bleiben gleich. Das Cover wird aus der neuen Datei gelesen.
+
 ### Wenn kein Cover in der Datei steckt
 
 Dann zeigt das Plugin eine dunkelgrüne Karte mit dem Buchtitel. Du kannst jederzeit ein eigenes Cover festlegen (siehe oben). Alles andere funktioniert gleich.
@@ -109,7 +147,7 @@ Unter **eBook → Info und Updates** zeigt das Plugin andere MGD-Plugins als Kar
 | „Die Datei ist größer als das Upload-Limit“ | Der Server erlaubt nur kleine Dateien. Der Hoster kann das Limit erhöhen (`upload_max_filesize`). Das aktuelle Limit steht unter dem Uploader. |
 | „Das ist keine gültige EPUB-Datei“ | Die Datei ist beschädigt oder wurde nur umbenannt. Bitte neu aus dem Schreibprogramm exportieren. |
 | „Es fehlt die PHP-Erweiterung zip“ | Beim Hoster die PHP-Erweiterung „zip“ einschalten lassen. |
-| Alle eBooks haben denselben Titel | Das Plugin nimmt den Titel, der **in der EPUB-Datei** gespeichert ist, nicht den Dateinamen. Manche Programme (zum Beispiel Affinity) übernehmen beim Export den Titel vom letzten Buch. Den Titel im Programm bei den Metadaten des Dokuments ändern, neu exportieren und neu hochladen. |
+| Alle eBooks haben denselben Titel | Das Plugin nimmt den Titel, der **in der EPUB-Datei** gespeichert ist, nicht den Dateinamen. Manche Programme (zum Beispiel Affinity) übernehmen beim Export den Titel vom letzten Buch. Am schnellsten: beim Buch **Angaben, Anzeige und Leseprobe** öffnen und den richtigen Titel eintragen. Oder im Programm bei den Metadaten den Titel ändern, neu exportieren und mit **Datei ersetzen** hochladen. |
 | Das Cover fehlt, obwohl die Datei eins hat | Manche Programme speichern das Cover ungewöhnlich. Das Buch funktioniert trotzdem, es zeigt dann die Platzhalter-Karte. |
 | Der Download startet nicht, sondern zeigt Text | Der Server kennt die Endung `.epub` nicht. Der Hoster soll den Dateityp `application/epub+zip` für `.epub` eintragen. |
 
@@ -124,6 +162,8 @@ php tests/install.php                               # Test Installation melden (
 php tests/catalog-feed.php                          # Test Empfehlungs-Feed
 php tests/kit-wiring.php                            # Test Baukasten-Einbau
 php tests/cover-save.php                            # Test Cover speichern (auch mit Bild-Plugins)
+php tests/title-downloads.php                       # Test Angaben, Anzeige, Zähler
+php tests/shelf.php                                 # Test Bücherregal
 python3 scripts/build-package.py                    # ZIP bauen (landet in dist/)
 ```
 

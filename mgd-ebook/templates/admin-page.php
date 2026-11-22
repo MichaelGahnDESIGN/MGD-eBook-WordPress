@@ -51,6 +51,13 @@ $total = (int) $query->found_posts;
             $cover = MGD_Ebook_Library::cover_url( $id );
             $url = MGD_Ebook_Library::file_url( $id );
             $shortcode = '[mgd_ebook id="' . $id . '"]';
+            $counted = MGD_Ebook_Downloads::link( $id );
+            $downloads = MGD_Ebook_Downloads::count( $id );
+            $epub = MGD_Ebook_Library::epub_book( $id );
+            $custom = MGD_Ebook_Library::custom_book( $id );
+            $show = MGD_Ebook_Library::show( $id );
+            $sample = MGD_Ebook_Sample::settings( $id );
+            $can_edit = current_user_can( 'edit_post', $id );
             ?>
             <article class="mgd-ebook-admin__card" data-mgd-card="<?php echo $id; ?>">
                 <div class="mgd-ebook-admin__card-head">
@@ -63,11 +70,19 @@ $total = (int) $query->found_posts;
                         <h3><?php echo esc_html( $title ); ?></h3>
                         <?php if ( '' !== $book['author'] ) : ?><p class="mgd-ebook-admin__author"><?php echo esc_html( $book['author'] ); ?></p><?php endif; ?>
                         <p class="mgd-ebook-admin__meta"><?php echo esc_html( MGD_Ebook_Library::file_size( $id ) ); ?> · <?php echo esc_html( get_the_date( '', $post ) ); ?><?php echo $cover ? '' : ' · kein Cover in der Datei'; ?></p>
+                        <p class="mgd-ebook-admin__downloads"><strong><?php echo (int) $downloads; ?>×</strong> heruntergeladen<?php echo $sample['on'] ? ' · Leseprobe an' : ''; ?></p>
                     </div>
                 </div>
 
                 <div class="mgd-ebook-admin__row">
-                    <label for="mgd-ebook-url-<?php echo $id; ?>">Link zur Datei <small>(zum Verlinken, z. B. im Divi Editor)</small></label>
+                    <label for="mgd-ebook-count-<?php echo $id; ?>">Download-Link mit Zähler <small>(empfohlen, z. B. für Bilder und Buttons im Divi Editor)</small></label>
+                    <div class="mgd-ebook-admin__copy">
+                        <input id="mgd-ebook-count-<?php echo $id; ?>" type="text" readonly value="<?php echo esc_attr( $counted ); ?>">
+                        <button type="button" class="button button-primary" data-mgd-copy="mgd-ebook-count-<?php echo $id; ?>">Kopieren</button>
+                    </div>
+                </div>
+                <div class="mgd-ebook-admin__row">
+                    <label for="mgd-ebook-url-<?php echo $id; ?>">Direkter Link zur Datei <small>(zählt nicht mit)</small></label>
                     <div class="mgd-ebook-admin__copy">
                         <input id="mgd-ebook-url-<?php echo $id; ?>" type="text" readonly value="<?php echo esc_attr( $url ); ?>">
                         <button type="button" class="button" data-mgd-copy="mgd-ebook-url-<?php echo $id; ?>">Kopieren</button>
@@ -77,9 +92,76 @@ $total = (int) $query->found_posts;
                     <label for="mgd-ebook-sc-<?php echo $id; ?>">Shortcode <small>(Cover mit Vorschau-Fenster)</small></label>
                     <div class="mgd-ebook-admin__copy">
                         <input id="mgd-ebook-sc-<?php echo $id; ?>" type="text" readonly value="<?php echo esc_attr( $shortcode ); ?>">
-                        <button type="button" class="button button-primary" data-mgd-copy="mgd-ebook-sc-<?php echo $id; ?>">Kopieren</button>
+                        <button type="button" class="button" data-mgd-copy="mgd-ebook-sc-<?php echo $id; ?>">Kopieren</button>
                     </div>
                 </div>
+
+                <?php if ( $can_edit ) : ?>
+                <?php // Metadaten, Anzeige + Leseprobe - einklappbar, damit die Karte ruhig bleibt ?>
+                <details class="mgd-ebook-admin__more">
+                    <summary>Angaben, Anzeige und Leseprobe</summary>
+                    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+                        <?php wp_nonce_field( 'mgd_ebook_settings_' . $id ); ?>
+                        <input type="hidden" name="action" value="mgd_ebook_settings">
+                        <input type="hidden" name="attachment_id" value="<?php echo $id; ?>">
+                        <p class="description">Leere Felder nehmen den Wert aus der EPUB-Datei (grau angezeigt).</p>
+                        <div class="mgd-ebook-admin__fields">
+                            <?php foreach ( MGD_Ebook_Library::FIELDS as $key => $label ) :
+                                $field_id = 'mgd-ebook-' . $key . '-' . $id; ?>
+                                <p class="mgd-ebook-admin__field mgd-ebook-admin__field--<?php echo esc_attr( $key ); ?>">
+                                    <label for="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( $label ); ?></label>
+                                    <?php if ( 'description' === $key ) : ?>
+                                        <textarea id="<?php echo esc_attr( $field_id ); ?>" name="meta[description]" rows="4" maxlength="1500" placeholder="<?php echo esc_attr( $epub['description'] ); ?>"><?php echo esc_textarea( $custom['description'] ?? '' ); ?></textarea>
+                                    <?php else : ?>
+                                        <input id="<?php echo esc_attr( $field_id ); ?>" type="text" name="meta[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $custom[ $key ] ?? '' ); ?>" placeholder="<?php echo esc_attr( $epub[ $key ] ); ?>"<?php echo in_array( $key, array( 'year', 'series_index' ), true ) ? ' inputmode="numeric"' : ''; ?>>
+                                    <?php endif; ?>
+                                </p>
+                            <?php endforeach; ?>
+                        </div>
+                        <fieldset class="mgd-ebook-admin__show">
+                            <legend>Im Vorschau-Fenster anzeigen</legend>
+                            <?php foreach ( MGD_Ebook_Library::SHOW as $key => $default ) :
+                                $label = 'size' === $key ? 'Dateigröße' : MGD_Ebook_Library::FIELDS[ $key ]; ?>
+                                <label><input type="checkbox" name="show[<?php echo esc_attr( $key ); ?>]" value="1" <?php checked( $show[ $key ] ); ?>> <?php echo esc_html( $label ); ?></label>
+                            <?php endforeach; ?>
+                        </fieldset>
+                        <fieldset class="mgd-ebook-admin__sample">
+                            <legend>Leseprobe</legend>
+                            <label><input type="checkbox" name="sample_on" value="1" <?php checked( $sample['on'] ); ?>> Leseprobe im Vorschau-Fenster zeigen</label>
+                            <label>Seiten <input type="number" name="sample_pages" min="1" max="<?php echo (int) MGD_Ebook_Sample::MAX_PAGES; ?>" value="<?php echo (int) $sample['pages']; ?>"></label>
+                            <span class="description">Eine reine Cover-Seite am Anfang wird übersprungen.</span>
+                        </fieldset>
+                        <p><?php submit_button( 'Speichern', 'primary', 'submit', false ); ?></p>
+                    </form>
+                </details>
+
+                <?php // Neue Version der Datei hochladen, alles andere bleibt ?>
+                <details class="mgd-ebook-admin__more">
+                    <summary>Datei ersetzen</summary>
+                    <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
+                        <?php wp_nonce_field( 'mgd_ebook_replace_' . $id ); ?>
+                        <input type="hidden" name="action" value="mgd_ebook_replace">
+                        <input type="hidden" name="attachment_id" value="<?php echo $id; ?>">
+                        <p class="description">Lade eine neue Version dieses Buchs hoch. Links, Shortcode, Zähler und deine Angaben bleiben gleich. Das Cover wird aus der neuen Datei gelesen.</p>
+                        <p><input type="file" name="mgd_ebook_file" accept=".epub,application/epub+zip" required aria-label="Neue EPUB-Datei für <?php echo esc_attr( $title ); ?>"></p>
+                        <p><?php submit_button( 'Datei ersetzen', 'secondary', 'submit', false ); ?></p>
+                    </form>
+                </details>
+                <?php endif; ?>
+
+                <?php $months = MGD_Ebook_Downloads::months( $id ); if ( $months ) : ?>
+                <details class="mgd-ebook-admin__more">
+                    <summary>Downloads pro Monat</summary>
+                    <table class="mgd-ebook-admin__stats">
+                        <thead><tr><th scope="col">Monat</th><th scope="col">Downloads</th></tr></thead>
+                        <tbody>
+                        <?php foreach ( array_slice( $months, 0, 12, true ) as $month => $n ) : ?>
+                            <tr><td><?php echo esc_html( wp_date( 'F Y', (int) strtotime( $month . '-01 12:00:00' ) ) ); ?></td><td><?php echo (int) $n; ?></td></tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </details>
+                <?php endif; ?>
 
                 <div class="mgd-ebook-admin__actions">
                     <a href="<?php echo esc_url( $url ); ?>" download>Datei laden</a>
@@ -131,8 +213,9 @@ $total = (int) $query->found_posts;
     <details class="mgd-ebook-admin__help">
         <summary>So benutzt du es</summary>
         <ol>
-            <li><strong>Nur verlinken:</strong> „Link zur Datei“ kopieren und im Divi Editor bei einem Button oder Text als Link eintragen.</li>
+            <li><strong>Nur verlinken:</strong> „Download-Link mit Zähler“ kopieren und im Divi Editor bei einem Bild, Button oder Text als Link eintragen. Jeder Download wird gezählt (ohne IP-Adressen, ohne Cookies).</li>
             <li><strong>Mit Cover und Vorschau:</strong> Shortcode kopieren und in ein Text-Modul einfügen. Besucher sehen das Cover, ein Klick öffnet ein Fenster mit Infos und Download-Button.</li>
+            <li><strong>Bücherregal:</strong> Mehrere Bücher nebeneinander mit <code>[mgd_ebook_regal ids="12,15,9"]</code> (in dieser Reihenfolge) oder alle Bücher einer Reihe mit <code>[mgd_ebook_regal reihe="Name der Reihe"]</code> (sortiert nach Band). Die Reihe trägst du unter „Angaben, Anzeige und Leseprobe“ ein.</li>
             <li><strong>Feinschliff:</strong> <code>width="260"</code> ändert die Cover-Breite, <code>caption="no"</code> blendet den Titel aus, <code>button="Jetzt laden"</code> ändert den Button-Text. Beispiel: <code>[mgd_ebook id="12" width="260" button="Jetzt laden"]</code></li>
         </ol>
     </details>
