@@ -170,13 +170,14 @@ final class MGD_Ebook_Admin {
     }
 
     /** Datei tauschen. Leer = ok, sonst Fehlermeldung. Bei Fehler bleibt die alte Datei. */
-    private function replace_file( int $id, array $file ): string {
+    private function replace_file( int $id, array $file, bool $from_upload = true ): string {
         $error = (int) ( $file['error'] ?? UPLOAD_ERR_NO_FILE );
         if ( UPLOAD_ERR_NO_FILE === $error ) { return 'Es wurde keine Datei ausgewählt.'; }
         if ( UPLOAD_ERR_OK !== $error ) { return $this->upload_error( $error ); }
         $tmp = (string) ( $file['tmp_name'] ?? '' );
         if ( 'epub' !== strtolower( pathinfo( (string) ( $file['name'] ?? '' ), PATHINFO_EXTENSION ) ) ) { return 'Nur Dateien mit der Endung .epub sind erlaubt.'; }
-        if ( '' === $tmp || ! is_uploaded_file( $tmp ) ) { return 'Der Upload hat nicht geklappt.'; }
+        // $from_upload false nur für den Demo-Test per WP-CLI (kein Browser-Upload möglich)
+        if ( '' === $tmp || ( $from_upload ? ! is_uploaded_file( $tmp ) : ! is_file( $tmp ) ) ) { return 'Der Upload hat nicht geklappt.'; }
         $parsed = MGD_Ebook_Epub::read( $tmp );
         if ( is_wp_error( $parsed ) ) { return $parsed->get_error_message(); }
         $target = (string) get_attached_file( $id );
@@ -184,7 +185,8 @@ final class MGD_Ebook_Admin {
         // alte Datei erst weg, wenn die neue sicher liegt
         $backup = $target . '.mgd-alt';
         if ( ! @copy( $target, $backup ) ) { return 'Die bisherige Datei konnte nicht gesichert werden. Es wurde nichts geändert.'; }
-        if ( ! @move_uploaded_file( $tmp, $target ) ) {
+        $moved = $from_upload ? @move_uploaded_file( $tmp, $target ) : @rename( $tmp, $target );
+        if ( ! $moved ) {
             @rename( $backup, $target );
             return 'Die neue Datei konnte nicht gespeichert werden. Die alte Datei ist noch da.';
         }
