@@ -13,6 +13,8 @@
 | `assets/` | CSS und JavaScript |
 | `includes/Kit/` | Baukasten: Updates, Installation melden, Weitere Plugins, Seite „Info und Updates“. Erzeugt mit `php bin/build-plugin-kit.php mgd-ebook --platform=wordpress --namespace='Mgd\Ebook\Kit' --dir=includes/Kit` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
 | `includes/class-mgd-ebook-updater.php`, `includes/install-client/`, `includes/class-mgd-plugin-admin-tools.php` | Alte Bausteine bis 0.3.0. Werden nicht mehr geladen, kommen in einer späteren Version raus |
+| `divi/` | Divi-5-Module „MGD eBook“ und „MGD Bücherregal“: `module.json` (PHP + JS gemeinsam), `class-mgd-ebook-divi.php` (Anmeldung, Vorschau-Schnittstelle, Ausgabe), `assets/divi-vb.js` (Builder, reines JavaScript ohne Build über `window.divi` und `window.vendor`) |
+| `includes/class-mgd-ebook-schema.php` | Google-Infos (schema.org Book als JSON-LD) |
 | `uninstall.php` | Meldet beim Löschen bei theme.michael-gahn.de ab und entfernt die Baukasten-Daten. eBooks bleiben |
 | `includes/plugin-catalog/`, `assets/plugin-catalog/` | Pluginempfehlung (in allen MGD-Plugins gleich) |
 
@@ -37,6 +39,7 @@ php tests/updater.php        # Update-Weg und Prüfsumme
 php tests/install.php        # Installation melden, Schalter aus/an
 php tests/catalog-feed.php   # Empfehlungs-Feed (Adresse, 15 Minuten Cache)
 php tests/kit-wiring.php     # Baukasten angeschlossen, alte Updater aus
+php tests/schema.php         # Google-Infos + Divi-Modul-Beschreibung
 ```
 
 Der Test baut künstliche EPUB-Dateien (gültig, ohne Cover, defekt, mit Pfad-Tricks, mit XML-Entitäten, mit riesigem Cover) und prüft den Parser. Er braucht kein WordPress.

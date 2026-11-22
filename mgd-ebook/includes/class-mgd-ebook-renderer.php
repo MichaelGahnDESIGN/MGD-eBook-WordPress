@@ -88,6 +88,7 @@ final class MGD_Ebook_Renderer {
         );
         wp_enqueue_style( 'mgd-ebook' );
         wp_enqueue_script( 'mgd-ebook' );
+        MGD_Ebook_Schema::add( $id );
         ob_start();
         include MGD_EBOOK_DIR . 'templates/ebook.php';
         return (string) ob_get_clean();

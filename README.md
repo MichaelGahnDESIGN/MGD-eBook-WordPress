@@ -22,7 +22,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
 ## Installieren (Schritt für Schritt)
 
-1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.5.0.zip` (die Zahl ändert sich).
+1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.6.0.zip` (die Zahl ändert sich).
 2. Öffne in WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Wähle die ZIP-Datei aus und klicke auf **Jetzt installieren**.
 4. Klicke auf **Plugin aktivieren**.
@@ -81,6 +81,23 @@ Das Cover aus der EPUB-Datei passt nicht oder fehlt? Du kannst ein eigenes Bild 
 Das bisherige Cover kannst du im selben Fenster nochmal neu ausschneiden. Mit **Original aus der EPUB wiederherstellen** holst du das ursprüngliche Cover zurück.
 
 Tipp: Bücher-Cover sind meist im Format 2 zu 3 (hoch). Der Rahmen hat dieses Format.
+
+### Mit dem Divi Builder (Divi 5)
+
+1. Seite im Divi Builder öffnen.
+2. Modul hinzufügen und **MGD eBook** oder **MGD Bücherregal** suchen.
+3. Bei **MGD eBook** das Buch aus der Liste wählen. Bei **MGD Bücherregal** eine Reihe wählen oder die IDs eintragen.
+4. Breite, Bildunterschrift und Knopftext nach Wunsch einstellen. Abstände, Rahmen und Animation gehen wie bei jedem Divi-Modul.
+
+Die Vorschau im Builder zeigt sofort das echte Cover. Klicks auf das Cover öffnen im Builder kein Fenster, das geht erst auf der fertigen Seite.
+
+### Farbe anpassen
+
+Die Knöpfe sind ab Werk dunkelrot. Eine andere Farbe geht mit einer Zeile CSS (zum Beispiel in Divi unter Theme-Optionen → Benutzerdefiniertes CSS):
+
+```css
+.mgd-ebook, .mgd-ebook-regal { --mgd-ebook-accent: #2a5b4f; }
+```
 
 ### Bücherregal (mehrere Bücher nebeneinander)
 
@@ -164,6 +181,7 @@ php tests/kit-wiring.php                            # Test Baukasten-Einbau
 php tests/cover-save.php                            # Test Cover speichern (auch mit Bild-Plugins)
 php tests/title-downloads.php                       # Test Angaben, Anzeige, Zähler
 php tests/shelf.php                                 # Test Bücherregal
+php tests/schema.php                                # Test Google-Infos + Divi-Module
 python3 scripts/build-package.py                    # ZIP bauen (landet in dist/)
 ```
 

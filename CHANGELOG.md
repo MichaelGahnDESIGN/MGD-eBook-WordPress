@@ -1,5 +1,13 @@
 # Änderungen
 
+## 0.6.0 – Divi-Module, Google-Infos und neues Design
+
+- **Divi 5:** Zwei neue Module im Divi Builder: **MGD eBook** (ein Buch aus einer Liste mit allen eBooks auswählen) und **MGD Bücherregal** (eine Reihe wählen oder IDs eintragen). Im Builder siehst du sofort die echte Vorschau. Abstände, Rahmen, Hintergrund und Animation stellst du wie bei jedem Divi-Modul ein. Ohne Divi 5 passiert nichts, die Shortcodes gehen weiter.
+- **Google-Infos:** Für jedes angezeigte eBook steht unsichtbar eine Buch-Beschreibung nach schema.org in der Seite (Titel, Autor, Cover, Reihe, Band und weitere Angaben, die du zum Anzeigen eingeschaltet hast). Suchmaschinen erkennen so, dass es ein Buch ist.
+- **Neues Design:** Cover sehen aus wie echte Bücher (Buchrücken, Seitenkante, Schatten, leichtes Kippen beim Darüberfahren). Im Bücherregal stehen die Bücher auf einem Regalbrett. Das Vorschau-Fenster zeigt die Reihe über dem Titel, eine aufgeräumte Angaben-Tabelle und Knöpfe mit Symbol. Die Leseprobe öffnet sich mit eigenem Knopf und sieht aus wie Buchseiten mit Seitenzahl.
+- Wer am Gerät „Bewegung reduzieren“ eingestellt hat, bekommt keine Animationen. Die Farbe der Knöpfe lässt sich per CSS-Variable `--mgd-ebook-accent` an die Website anpassen.
+- Verwaltung: aufklappbare Bereiche und Download-Zähler übersichtlicher gestaltet.
+
 ## 0.5.0 – Angaben, Leseprobe, Bücherregal und Download-Zähler
 
 - **Angaben bearbeiten:** Titel, Autor, Beschreibung, Reihe, Band, Verlag, Erscheinungsjahr, ISBN und Sprache lassen sich pro Buch ändern. Leere Felder nehmen den Wert aus der EPUB-Datei.

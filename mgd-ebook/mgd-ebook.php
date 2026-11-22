@@ -3,7 +3,7 @@
  * Plugin Name: MGD eBook
  * Plugin URI: https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress
  * Description: EPUB-Dateien hochladen, als Download anbieten und per Shortcode mit Cover und Vorschau-Fenster zeigen. Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
- * Version: 0.5.0
+ * Version: 0.6.0
  * Requires at least: 6.5
  * Requires PHP: 8.1
  * Author: Michael Gahn DESIGN
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MGD_EBOOK_VERSION', '0.5.0' );
+define( 'MGD_EBOOK_VERSION', '0.6.0' );
 define( 'MGD_EBOOK_FILE', __FILE__ );
 define( 'MGD_EBOOK_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MGD_EBOOK_URL', plugin_dir_url( __FILE__ ) );
@@ -25,10 +25,14 @@ require_once MGD_EBOOK_DIR . 'includes/class-mgd-ebook-library.php';
 require_once MGD_EBOOK_DIR . 'includes/class-mgd-ebook-renderer.php';
 require_once MGD_EBOOK_DIR . 'includes/class-mgd-ebook-downloads.php';
 require_once MGD_EBOOK_DIR . 'includes/class-mgd-ebook-sample.php';
+require_once MGD_EBOOK_DIR . 'includes/class-mgd-ebook-schema.php';
+require_once MGD_EBOOK_DIR . 'divi/class-mgd-ebook-divi.php';
 require_once MGD_EBOOK_DIR . 'includes/class-mgd-ebook-admin.php';
 require_once MGD_EBOOK_DIR . 'includes/class-mgd-ebook-plugin.php';
 
 MGD_Ebook_Plugin::boot();
+// Divi-5-Module, greift nur wenn Divi 5 läuft
+MGD_Ebook_Divi::boot();
 
 // Baukasten aus MichaThemeV5-Pro > includes/Kit (bin/build-plugin-kit.php), nicht von hand ändern
 spl_autoload_register( static function ( string $class ): void {
