@@ -14,6 +14,8 @@ final class MGD_Ebook_Admin {
         add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
         add_action( 'admin_post_mgd_ebook_upload', array( $this, 'upload' ) );
         add_action( 'admin_post_mgd_ebook_delete', array( $this, 'delete' ) );
+        // Knopf Installieren bei Weitere Plugins, muss auch in admin-post.php angemeldet sein
+        add_action( 'admin_init', array( $this, 'catalog_actions' ) );
         // Cover aendern (Editor schickt per AJAX)
         add_action( 'wp_ajax_mgd_ebook_cover', array( $this, 'ajax_cover' ) );
         add_action( 'wp_ajax_mgd_ebook_cover_reset', array( $this, 'ajax_cover_reset' ) );
@@ -50,11 +52,19 @@ final class MGD_Ebook_Admin {
 
     public function plugins_page(): void {
         if ( ! current_user_can( 'manage_options' ) ) { wp_die( 'Nicht berechtigt.', '', array( 'response' => 403 ) ); }
-        $list = \Mgd\Ebook\Kit\Platform\WordPress\Setup::recommendations( 'mgd-ebook', 'wordpress', 'mgd-ebook', $this->fallback_plugins(), 'MGD-eBook-WordPress' );
+        $list = $this->recommendations();
         // parent leer = kein eigener Menüpunkt, Lizenz bleibt aus
         $dash = \Mgd\Ebook\Kit\Platform\WordPress\Setup::dashboard( 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', MGD_Ebook_Plugin::$updater, $list, false, '' );
         if ( null === $dash ) { echo '<div class="wrap"><p>Die Seite konnte gerade nicht geladen werden.</p></div>'; return; }
         $dash->page();
+    }
+
+    public function catalog_actions(): void {
+        \Mgd\Ebook\Kit\Platform\WordPress\Setup::catalogActions( 'mgd-ebook', $this->recommendations(), admin_url( 'admin.php?page=mgd-ebook-plugins' ) );
+    }
+
+    private function recommendations(): ?\Mgd\Ebook\Kit\Catalog\Recommendations {
+        return \Mgd\Ebook\Kit\Platform\WordPress\Setup::recommendations( 'mgd-ebook', 'wordpress', 'mgd-ebook', $this->fallback_plugins(), 'MGD-eBook-WordPress' );
     }
 
     // Ersatzliste aus plugin-catalog/plugins.json, falls theme.michael-gahn.de nicht antwortet
@@ -64,7 +74,17 @@ final class MGD_Ebook_Admin {
         $out = array();
         foreach ( is_array( $data ) ? $data : array() as $row ) {
             if ( is_array( $row ) && ! empty( $row['slug'] ) ) {
-                $out[] = array( 'slug' => (string) $row['slug'], 'name' => (string) ( $row['name'] ?? '' ), 'description' => (string) ( $row['description'] ?? '' ), 'version' => '' );
+                // Kategorie, Häkchen + Basenames für die neue Kollektion-Ansicht, Rest prüft der Baukasten
+                $out[] = array(
+                    'slug' => (string) $row['slug'],
+                    'name' => (string) ( $row['name'] ?? '' ),
+                    'description' => (string) ( $row['description'] ?? '' ),
+                    'version' => '',
+                    'category' => (string) ( $row['category'] ?? '' ),
+                    'features' => (array) ( $row['features'] ?? array() ),
+                    'basenames' => (array) ( $row['basenames'] ?? array() ),
+                    'tier' => (string) ( $row['tier'] ?? 'free' ),
+                );
             }
         }
         return $out;

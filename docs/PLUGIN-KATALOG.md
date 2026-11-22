@@ -2,7 +2,9 @@
 
 Unter **eBook → Info und Updates** zeigt MGD eBook die anderen Plugins von Michael Gahn DESIGN. Die Liste kommt seit Version 0.4.0 aus dem gemeinsamen Baukasten (`includes/Kit`), wie bei den anderen MGD-Plugins.
 
-⚠️ Der Rest dieser Seite beschreibt die alte Seite „Weitere Plugins“ bis Version 0.3.0. Die Dateien dafür liegen noch im Plugin, werden aber nicht mehr geladen. Sie kommen in einer späteren Version raus. Die mitgelieferte Ersatzliste `includes/plugin-catalog/plugins.json` nutzt der Baukasten weiter (Feld `slug` = Katalog-Kennung).
+Seit 0.4.2 sieht die Liste aus wie die alte „MGD Plugin-Kollektion“: Bilder, Kategorien, Suche, Filter, Details-Fenster und der Knopf **Installieren** (nur für Administratoren, das Plugin wird nie automatisch aktiviert). Die alte Seite `class-mgd-wordpress-plugin-catalog.php` ist entfernt.
+
+⚠️ Der Rest dieser Seite beschreibt den alten Stand bis Version 0.3.0. Einige alte Dateien (`includes/plugin-catalog/`, `assets/plugin-catalog/`) liegen noch im Plugin und kommen in einer späteren Version raus. Die mitgelieferte Ersatzliste `includes/plugin-catalog/plugins.json` nutzt der Baukasten weiter (Feld `slug` = Katalog-Kennung).
 
 ## Was kann die Seite?
 
@@ -21,4 +23,4 @@ Unter **eBook → Info und Updates** zeigt MGD eBook die anderen Plugins von Mic
 
 Eintrag in `mgd-ebook/includes/plugin-catalog/plugins.json` ergänzen (Name, Beschreibung, Kategorie, Icon, Repository-Name). Das Icon als SVG nach `mgd-ebook/assets/plugin-catalog/icons/` legen. Der Repository-Name muss mit `MGD-` oder `MGD_` beginnen.
 
-⚠️ Die Dateien in `includes/plugin-catalog/`, `includes/class-mgd-wordpress-plugin-catalog.php` und `assets/plugin-catalog/` sind in allen MGD-Plugins gleich. Änderungen daran bitte in allen Plugins gleich machen.
+⚠️ Die Dateien in `includes/plugin-catalog/` und `assets/plugin-catalog/` sind in allen MGD-Plugins gleich. Änderungen daran bitte in allen Plugins gleich machen.
