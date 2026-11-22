@@ -112,3 +112,29 @@ body.mgd-ebook-lock { overflow: hidden; }
   .mgd-ebook__dialog { border: 2px solid CanvasText; }
   .mgd-ebook__download { border: 2px solid LinkText; }
 }
+
+/* Zusatzangaben im Fenster (Reihe, Verlag, Jahr...) */
+.mgd-ebook__details { display: grid; gap: 4px; margin: 0 0 1.2em; font-size: .92em; }
+.mgd-ebook__details div { display: flex; flex-wrap: wrap; gap: 0 8px; }
+.mgd-ebook__details dt { margin: 0; color: var(--mgd-ebook-muted); }
+.mgd-ebook__details dt::after { content: ":"; }
+.mgd-ebook__details dd { margin: 0; overflow-wrap: anywhere; }
+
+/* Leseprobe einklappbar unter dem Panel */
+.mgd-ebook__sample { margin: 0 32px 32px; border-top: 1px solid rgba(0, 0, 0, .12); padding-top: 16px; }
+.mgd-ebook__sample summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 700; color: var(--mgd-ebook-accent); }
+.mgd-ebook__sample summary:focus-visible { outline: 3px solid var(--mgd-ebook-accent); outline-offset: 3px; }
+.mgd-ebook__page { max-width: 62ch; margin: 18px auto 0; padding: 0 0 18px; border-bottom: 1px dashed rgba(0, 0, 0, .15); line-height: 1.6; }
+.mgd-ebook__page:last-child { border-bottom: 0; }
+.mgd-ebook__page h3 { margin: 1em 0 .4em; font-size: 1.15em; }
+.mgd-ebook__page p { margin: 0 0 .8em; }
+.mgd-ebook__page img { display: block; max-width: 100%; height: auto; margin: 12px auto; border-radius: 4px; }
+
+/* Buecherregal  */
+.mgd-ebook-regal { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(var(--mgd-ebook-width, 180px), 100%), 1fr)); gap: 28px 24px; align-items: start; }
+.mgd-ebook-regal .mgd-ebook { width: 100%; }
+
+@media (max-width: 600px) {
+  .mgd-ebook__sample { margin: 0 18px 22px; }
+  .mgd-ebook-regal { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+}

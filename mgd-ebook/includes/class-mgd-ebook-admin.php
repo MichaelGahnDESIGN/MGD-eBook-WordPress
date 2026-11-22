@@ -6,6 +6,7 @@ final class MGD_Ebook_Admin {
     private const PAGE = 'mgd-ebook';
     private const PER_PAGE = 20;
     private const MAX_FILES = 20;
+    private const BIG_FILE = 20971520; // ab 20 MB Hinweis
 
     public function __construct( private MGD_Ebook_Library $library ) {}
 
@@ -14,8 +15,8 @@ final class MGD_Ebook_Admin {
         add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
         add_action( 'admin_post_mgd_ebook_upload', array( $this, 'upload' ) );
         add_action( 'admin_post_mgd_ebook_delete', array( $this, 'delete' ) );
-        // Knopf Installieren bei Weitere Plugins, muss auch in admin-post.php angemeldet sein
-        add_action( 'admin_init', array( $this, 'catalog_actions' ) );
+        add_action( 'admin_post_mgd_ebook_settings', array( $this, 'save_settings' ) );
+        add_action( 'admin_post_mgd_ebook_replace', array( $this, 'replace' ) );
         // Cover aendern (Editor schickt per AJAX)
         add_action( 'wp_ajax_mgd_ebook_cover', array( $this, 'ajax_cover' ) );
         add_action( 'wp_ajax_mgd_ebook_cover_reset', array( $this, 'ajax_cover_reset' ) );
@@ -57,10 +58,6 @@ final class MGD_Ebook_Admin {
         $dash = \Mgd\Ebook\Kit\Platform\WordPress\Setup::dashboard( 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', MGD_Ebook_Plugin::$updater, $list, false, '' );
         if ( null === $dash ) { echo '<div class="wrap"><p>Die Seite konnte gerade nicht geladen werden.</p></div>'; return; }
         $dash->page();
-    }
-
-    public function catalog_actions(): void {
-        \Mgd\Ebook\Kit\Platform\WordPress\Setup::catalogActions( 'mgd-ebook', $this->recommendations(), admin_url( 'admin.php?page=mgd-ebook-plugins' ) );
     }
 
     private function recommendations(): ?\Mgd\Ebook\Kit\Catalog\Recommendations {
@@ -119,6 +116,8 @@ final class MGD_Ebook_Admin {
                 continue;
             }
             $messages[] = array( 'success', MGD_Ebook_Library::title( (int) $id ) . ' wurde hochgeladen.' . ( '' === MGD_Ebook_Library::cover_url( (int) $id ) ? ' Es wurde kein Cover gefunden, die Anzeige nutzt dann eine Platzhalter-Karte.' : '' ) );
+            $big = $this->size_hint( (int) $id );
+            if ( '' !== $big ) { $messages[] = array( 'warning', $big ); }
         }
         if ( count( $files ) > self::MAX_FILES ) {
             $messages[] = array( 'warning', 'Pro Vorgang werden höchstens ' . self::MAX_FILES . ' Dateien verarbeitet. Der Rest wurde ausgelassen.' );
@@ -135,6 +134,77 @@ final class MGD_Ebook_Admin {
         $deleted = wp_delete_attachment( $id, true );
         $this->store_messages( array( $deleted ? array( 'success', $title . ' wurde gelöscht.' ) : array( 'error', $title . ' konnte nicht gelöscht werden.' ) ) );
         $this->back();
+    }
+
+    // Metadaten, Anzeige im Vorschau-Fenster + Leseprobe speichern
+    public function save_settings(): void {
+        $id = (int) ( $_POST['attachment_id'] ?? 0 );
+        $this->guard( 'mgd_ebook_settings_' . $id, 'upload_files' );
+        if ( ! MGD_Ebook_Library::is_ebook( $id ) || ! current_user_can( 'edit_post', $id ) ) { wp_die( 'Nicht berechtigt.', '', array( 'response' => 403 ) ); }
+        $meta = wp_unslash( $_POST['meta'] ?? array() ); // phpcs:ignore -- clean_field prüft jedes Feld
+        $show = wp_unslash( $_POST['show'] ?? array() ); // phpcs:ignore -- nur Schlüssel aus SHOW zählen
+        MGD_Ebook_Library::set_meta( $id, is_array( $meta ) ? $meta : array() );
+        MGD_Ebook_Library::set_show( $id, is_array( $show ) ? $show : array() );
+        $sample_on = ! empty( $_POST['sample_on'] );
+        $sample_ok = MGD_Ebook_Sample::update( $id, $sample_on, (int) ( $_POST['sample_pages'] ?? MGD_Ebook_Sample::DEFAULT_PAGES ) );
+        $title = MGD_Ebook_Library::title( $id );
+        $messages = array( array( 'success', 'Einstellungen für „' . $title . '“ gespeichert.' ) );
+        if ( $sample_on && ! $sample_ok ) { $messages[] = array( 'error', 'Die Leseprobe konnte nicht erstellt werden. In dieser EPUB-Datei wurden keine lesbaren Seiten gefunden.' ); }
+        $this->store_messages( $messages );
+        $this->back();
+    }
+
+    // Neue EPUB-Datei für ein vorhandenes eBook: Link, Shortcode, Zähler + Einstellungen bleiben
+    public function replace(): void {
+        $id = (int) ( $_POST['attachment_id'] ?? 0 );
+        $this->guard( 'mgd_ebook_replace_' . $id, 'upload_files' );
+        if ( ! MGD_Ebook_Library::is_ebook( $id ) || ! current_user_can( 'edit_post', $id ) ) { wp_die( 'Nicht berechtigt.', '', array( 'response' => 403 ) ); }
+        $file = $_FILES['mgd_ebook_file'] ?? array(); // phpcs:ignore -- wird unten geprüft
+        $error = $this->replace_file( $id, is_array( $file ) ? $file : array() );
+        $title = MGD_Ebook_Library::title( $id );
+        $messages = array( '' === $error ? array( 'success', 'Die Datei von „' . $title . '“ wurde ersetzt. Link, Shortcode und Zähler bleiben gleich.' ) : array( 'error', $error ) );
+        $big = '' === $error ? $this->size_hint( $id ) : '';
+        if ( '' !== $big ) { $messages[] = array( 'warning', $big ); }
+        $this->store_messages( $messages );
+        $this->back();
+    }
+
+    /** Datei tauschen. Leer = ok, sonst Fehlermeldung. Bei Fehler bleibt die alte Datei. */
+    private function replace_file( int $id, array $file ): string {
+        $error = (int) ( $file['error'] ?? UPLOAD_ERR_NO_FILE );
+        if ( UPLOAD_ERR_NO_FILE === $error ) { return 'Es wurde keine Datei ausgewählt.'; }
+        if ( UPLOAD_ERR_OK !== $error ) { return $this->upload_error( $error ); }
+        $tmp = (string) ( $file['tmp_name'] ?? '' );
+        if ( 'epub' !== strtolower( pathinfo( (string) ( $file['name'] ?? '' ), PATHINFO_EXTENSION ) ) ) { return 'Nur Dateien mit der Endung .epub sind erlaubt.'; }
+        if ( '' === $tmp || ! is_uploaded_file( $tmp ) ) { return 'Der Upload hat nicht geklappt.'; }
+        $parsed = MGD_Ebook_Epub::read( $tmp );
+        if ( is_wp_error( $parsed ) ) { return $parsed->get_error_message(); }
+        $target = (string) get_attached_file( $id );
+        if ( '' === $target || ! is_file( $target ) ) { return 'Die bisherige Datei wurde nicht gefunden.'; }
+        // alte Datei erst weg, wenn die neue sicher liegt
+        $backup = $target . '.mgd-alt';
+        if ( ! @copy( $target, $backup ) ) { return 'Die bisherige Datei konnte nicht gesichert werden. Es wurde nichts geändert.'; }
+        if ( ! @move_uploaded_file( $tmp, $target ) ) {
+            @rename( $backup, $target );
+            return 'Die neue Datei konnte nicht gespeichert werden. Die alte Datei ist noch da.';
+        }
+        @chmod( $target, 0644 );
+        wp_delete_file( $backup );
+        $meta = wp_get_attachment_metadata( $id );
+        $meta = is_array( $meta ) ? $meta : array();
+        $meta['filesize'] = (int) filesize( $target );
+        wp_update_attachment_metadata( $id, $meta );
+        $this->library->index( $id );
+        MGD_Ebook_Sample::build( $id );
+        return '';
+    }
+
+    /** Hinweis bei großen Dateien, leer = alles gut. */
+    private function size_hint( int $id ): string {
+        $path = (string) get_attached_file( $id );
+        $bytes = '' !== $path && is_file( $path ) ? (int) filesize( $path ) : 0;
+        if ( $bytes < self::BIG_FILE ) { return ''; }
+        return '„' . MGD_Ebook_Library::title( $id ) . '“ ist ' . size_format( $bytes, 1 ) . ' groß. Auf dem Handy dauert der Download dann länger. Tipp: Bilder beim Export kleiner speichern, zum Beispiel mit 150 dpi oder als JPEG statt PNG.';
     }
 
     // Cover aus Mediathek-Bild oder aktuellem Cover neu zuschneiden

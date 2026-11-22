@@ -118,3 +118,23 @@
 .mgd-ebook-editor__status.is-error { color: #b32d2e; font-weight: 600; }
 .mgd-ebook-editor__footer { display: flex; gap: 8px; justify-content: flex-end; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid #d9e1dc; }
 body.mgd-ebook-editing { overflow: hidden; }
+
+/* Downloads-Zeile + einklappbare Bereiche auf der Karte */
+.mgd-ebook-admin__downloads { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.mgd-ebook-admin__more { margin: 10px 0 0; border-top: 1px solid var(--line); padding-top: 8px; }
+.mgd-ebook-admin__more > summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; font-weight: 600; }
+.mgd-ebook-admin__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+.mgd-ebook-admin__field { margin: 0; }
+.mgd-ebook-admin__field label { display: block; font-weight: 600; margin-bottom: 2px; }
+.mgd-ebook-admin__field input, .mgd-ebook-admin__field textarea { width: 100%; }
+.mgd-ebook-admin__field--title, .mgd-ebook-admin__field--author, .mgd-ebook-admin__field--description, .mgd-ebook-admin__field--series { grid-column: 1 / -1; }
+.mgd-ebook-admin__show, .mgd-ebook-admin__sample { margin: 12px 0 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
+.mgd-ebook-admin__show legend, .mgd-ebook-admin__sample legend { font-weight: 600; padding: 0 4px; }
+.mgd-ebook-admin__show label, .mgd-ebook-admin__sample label { display: inline-flex; align-items: center; gap: 6px; margin: 4px 14px 4px 0; }
+.mgd-ebook-admin__sample input[type="number"] { width: 64px; }
+.mgd-ebook-admin__sample .description { display: block; }
+.mgd-ebook-admin__stats { border-collapse: collapse; margin-top: 6px; }
+.mgd-ebook-admin__stats th, .mgd-ebook-admin__stats td { text-align: left; padding: 4px 16px 4px 0; border-bottom: 1px solid var(--line); }
+@media (max-width: 600px) {
+  .mgd-ebook-admin__fields { grid-template-columns: 1fr; }
+}

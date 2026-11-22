@@ -38,6 +38,31 @@ check( 'EPUB3: Beschreibung ohne HTML', ( $r['description'] ?? '' ) === 'Eine ku
 check( 'EPUB3: Cover gefunden (URL-kodierter Pfad)', ( $r['cover'] ?? null ) === $png );
 check( 'EPUB3: Sprache', ( $r['language'] ?? '' ) === 'de' );
 
+// Zusatzfelder: Verlag, Jahr, ISBN, Reihe (calibre) + Band
+$opf_extra = '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="2.0"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>Band</dc:title><dc:publisher>Selbstverlag</dc:publisher><dc:date>2026-11-19T21:16:14Z</dc:date><dc:identifier>urn:uuid:123</dc:identifier><dc:identifier>urn:isbn:978-3-16-148410-0</dc:identifier><meta name="calibre:series" content="Spuren &amp; Stimmen"/><meta name="calibre:series_index" content="2.0"/></metadata><manifest/></package>';
+$r = MGD_Ebook_Epub::read( make_epub( array( 'OEBPS/content.opf' => $opf_extra ) ) );
+check( 'Zusatz: Verlag', ( $r['publisher'] ?? '' ) === 'Selbstverlag' );
+check( 'Zusatz: Jahr aus Datum', ( $r['year'] ?? '' ) === '2026' );
+check( 'Zusatz: ISBN gefunden, UUID ignoriert', ( $r['isbn'] ?? '' ) === '9783161484100' );
+check( 'Zusatz: Reihe + Band (2.0 > 2)', ( $r['series'] ?? '' ) === 'Spuren & Stimmen' && ( $r['series_index'] ?? '' ) === '2' );
+$opf_epub3 = '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="3.0"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>B</dc:title><meta property="belongs-to-collection" id="c1">Allverund</meta><meta refines="#c1" property="group-position">4</meta></metadata><manifest/></package>';
+$r = MGD_Ebook_Epub::read( make_epub( array( 'OEBPS/content.opf' => $opf_epub3 ) ) );
+check( 'Zusatz: EPUB-3-Reihe', ( $r['series'] ?? '' ) === 'Allverund' && ( $r['series_index'] ?? '' ) === '4' );
+
+// Leseprobe: Cover-Seite weg, Text + Bild der nächsten Seiten
+$sample_files = array(
+    'OEBPS/content.opf' => '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="3.0"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>S</dc:title></metadata><manifest><item id="p1" href="p1.xhtml" media-type="application/xhtml+xml"/><item id="p2" href="p2.xhtml" media-type="application/xhtml+xml"/><item id="p3" href="p3.xhtml" media-type="application/xhtml+xml"/><item id="i" href="images/cover%20bild.png" media-type="image/png"/></manifest><spine><itemref idref="p1"/><itemref idref="p2"/><itemref idref="p3"/></spine></package>',
+    'OEBPS/p1.xhtml' => '<html xmlns="http://www.w3.org/1999/xhtml"><body><img src="images/cover%20bild.png"/></body></html>',
+    'OEBPS/p2.xhtml' => '<html xmlns="http://www.w3.org/1999/xhtml"><body><h2>Kapitel&nbsp;1</h2><p>Es war <b>einmal</b>.</p><img src="images/cover%20bild.png"/><img src="https://evil.example/x.png"/><img src="../../etc/passwd"/></body></html>',
+    'OEBPS/p3.xhtml' => '<html xmlns="http://www.w3.org/1999/xhtml"><body><p>Seite drei</p></body></html>',
+);
+$pages = MGD_Ebook_Epub::sample_pages( make_epub( $sample_files ), 1 );
+check( 'Leseprobe: Cover-Seite übersprungen, 1 Seite', is_array( $pages ) && 1 === count( $pages ) );
+check( 'Leseprobe: Überschrift + Absatz als Text (ohne HTML)', ( $pages[0][0]['type'] ?? '' ) === 'h' && str_contains( $pages[0][0]['text'] ?? '', 'Kapitel' ) && ( $pages[0][1]['text'] ?? '' ) === 'Es war einmal.' );
+check( 'Leseprobe: nur das eigene Bild, keine fremden oder ../-Pfade', 3 === count( $pages[0] ) && 'img' === $pages[0][2]['type'] && $pages[0][2]['bytes'] === $png );
+$pages = MGD_Ebook_Epub::sample_pages( make_epub( $sample_files ), 5 );
+check( 'Leseprobe: mehr Seiten gewünscht als da sind', 2 === count( $pages ) );
+
 // 2 EPUB 2 mit meta name=cover
 $opf2 = '<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="2.0"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf"><dc:title>Alt</dc:title><meta name="cover" content="cov"/></metadata><manifest><item id="cov" href="img/x.png" media-type="image/png"/></manifest></package>';
 $r = MGD_Ebook_Epub::read( make_epub( array( 'OEBPS/content.opf' => $opf2, 'OEBPS/img/x.png' => $png, 'OEBPS/images/cover bild.png' => null ) ) );
