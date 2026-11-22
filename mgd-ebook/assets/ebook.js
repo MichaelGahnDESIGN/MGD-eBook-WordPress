@@ -15,6 +15,20 @@
       document.body.classList.add(LOCK);
       return;
     }
+    // Leseprobe auf/zu, danach hinscrollen
+    var toggle = event.target.closest('[data-mgd-ebook-sample]');
+    if (toggle) {
+      var sample = document.getElementById(toggle.getAttribute('aria-controls'));
+      if (!sample) { return; }
+      var open = sample.hasAttribute('hidden');
+      if (open) { sample.removeAttribute('hidden'); } else { sample.setAttribute('hidden', ''); }
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        sample.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+      }
+      return;
+    }
     // Schliessen Button
     var closer = event.target.closest('[data-mgd-ebook-close]');
     if (closer) {
