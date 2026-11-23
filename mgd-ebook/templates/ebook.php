@@ -13,7 +13,7 @@ if ( '' !== $data['size'] ) { $details[] = array( 'Format', 'EPUB · ' . $data['
 <div class="mgd-ebook" style="--mgd-ebook-width:<?php echo (int) $data['width']; ?>px">
     <div class="mgd-ebook__stage">
         <?php // Ohne JavaScript ist das Cover einfach ein Download-Link ?>
-        <a class="mgd-ebook__cover" href="<?php echo esc_url( '' !== $data['url'] ? $data['url'] : '#' . $data['uid'] ); ?>" data-mgd-ebook-open="<?php echo esc_attr( $data['uid'] ); ?>" aria-haspopup="dialog" aria-label="<?php echo esc_attr( $label ); ?>">
+        <a class="mgd-ebook__cover" href="<?php echo esc_url( '' !== $data['cover_href'] ? $data['cover_href'] : '#' . $data['uid'] ); ?>" data-mgd-ebook-open="<?php echo esc_attr( $data['uid'] ); ?>" aria-haspopup="dialog" aria-label="<?php echo esc_attr( $label ); ?>">
             <?php if ( $data['cover'] ) : ?>
                 <img src="<?php echo esc_url( $data['cover'] ); ?>" alt="Cover: <?php echo esc_attr( $data['title'] ); ?>" loading="lazy" decoding="async">
             <?php else : ?>
@@ -49,7 +49,15 @@ if ( '' !== $data['size'] ) { $details[] = array( 'Format', 'EPUB · ' . $data['
                 <?php endif; ?>
                 <div class="mgd-ebook__action">
                     <?php if ( '' !== $data['action'] ) : ?>
-                        <?php echo wp_kses_post( $data['action'] ); ?>
+                        <?php
+                        // eigene Knöpfe mit SVG-Symbol erlauben, sonst nur normales HTML
+                        $allowed = wp_kses_allowed_html( 'post' ) + array(
+                            'svg' => array( 'viewbox' => true, 'width' => true, 'height' => true, 'aria-hidden' => true, 'focusable' => true ),
+                            'path' => array( 'd' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true ),
+                            'circle' => array( 'cx' => true, 'cy' => true, 'r' => true, 'fill' => true ),
+                        );
+                        echo wp_kses( $data['action'], $allowed );
+                        ?>
                     <?php elseif ( '' !== $data['url'] ) : ?>
                         <a class="mgd-ebook__download" href="<?php echo esc_url( $data['url'] ); ?>" download><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><?php echo esc_html( $data['button'] ); ?></span></a>
                     <?php endif; ?>

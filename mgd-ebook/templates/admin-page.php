@@ -58,6 +58,9 @@ $total = (int) $query->found_posts;
             $show = MGD_Ebook_Library::show( $id );
             $sample = MGD_Ebook_Sample::settings( $id );
             $can_edit = current_user_can( 'edit_post', $id );
+            $sale = MGD_Ebook_Shop::sale( $id );
+            $paid = 'paid' === $sale['mode'];
+            $shop_product = $paid ? MGD_Ebook_Shop::product( $id ) : null;
             ?>
             <article class="mgd-ebook-admin__card" data-mgd-card="<?php echo $id; ?>">
                 <div class="mgd-ebook-admin__card-head">
@@ -70,10 +73,16 @@ $total = (int) $query->found_posts;
                         <h3><?php echo esc_html( $title ); ?></h3>
                         <?php if ( '' !== $book['author'] ) : ?><p class="mgd-ebook-admin__author"><?php echo esc_html( $book['author'] ); ?></p><?php endif; ?>
                         <p class="mgd-ebook-admin__meta"><?php echo esc_html( MGD_Ebook_Library::file_size( $id ) ); ?> · <?php echo esc_html( get_the_date( '', $post ) ); ?><?php echo $cover ? '' : ' · kein Cover in der Datei'; ?></p>
-                        <p class="mgd-ebook-admin__downloads"><strong><?php echo (int) $downloads; ?>×</strong> heruntergeladen<?php echo $sample['on'] ? ' · Leseprobe an' : ''; ?></p>
+                        <p class="mgd-ebook-admin__downloads"><strong><?php echo (int) $downloads; ?>×</strong> heruntergeladen<?php echo $sample['on'] ? ' · Leseprobe an' : ''; ?><?php echo $paid ? ' · im Verkauf' : ''; ?></p>
                     </div>
                 </div>
 
+                <?php if ( $paid ) : ?>
+                <p class="mgd-ebook-admin__sale-note">
+                    Dieses eBook wird verkauft. Die Datei ist geschützt, nur Käufer können sie laden.
+                    <?php if ( $shop_product ) : ?><a href="<?php echo esc_url( (string) get_edit_post_link( $shop_product->get_id() ) ); ?>">Produkt bearbeiten</a> · <a href="<?php echo esc_url( $shop_product->get_permalink() ); ?>" target="_blank" rel="noopener">Produkt ansehen</a><?php else : ?><strong>Das Produkt ist nicht veröffentlicht oder WooCommerce ist aus.</strong><?php endif; ?>
+                </p>
+                <?php else : ?>
                 <div class="mgd-ebook-admin__row">
                     <label for="mgd-ebook-count-<?php echo $id; ?>">Download-Link mit Zähler <small>(empfohlen, z. B. für Bilder und Buttons im Divi Editor)</small></label>
                     <div class="mgd-ebook-admin__copy">
@@ -88,6 +97,7 @@ $total = (int) $query->found_posts;
                         <button type="button" class="button" data-mgd-copy="mgd-ebook-url-<?php echo $id; ?>">Kopieren</button>
                     </div>
                 </div>
+                <?php endif; ?>
                 <div class="mgd-ebook-admin__row">
                     <label for="mgd-ebook-sc-<?php echo $id; ?>">Shortcode <small>(Cover mit Vorschau-Fenster)</small></label>
                     <div class="mgd-ebook-admin__copy">
@@ -131,6 +141,25 @@ $total = (int) $query->found_posts;
                             <label>Seiten <input type="number" name="sample_pages" min="1" max="<?php echo (int) MGD_Ebook_Sample::MAX_PAGES; ?>" value="<?php echo (int) $sample['pages']; ?>"></label>
                             <span class="description">Eine reine Cover-Seite am Anfang wird übersprungen.</span>
                         </fieldset>
+                        <?php if ( MGD_Ebook_Shop::active() ) : $products = MGD_Ebook_Shop::product_options(); ?>
+                        <fieldset class="mgd-ebook-admin__sale">
+                            <legend>Verkauf (WooCommerce)</legend>
+                            <label><input type="radio" name="sale_mode" value="free" <?php checked( ! $paid ); ?>> Kostenlos zum Herunterladen</label>
+                            <label><input type="radio" name="sale_mode" value="paid" <?php checked( $paid ); ?>> Verkaufen</label>
+                            <div class="mgd-ebook-admin__sale-fields">
+                                <label>Preis in <?php echo esc_html( get_woocommerce_currency_symbol() ); ?> <input type="text" name="sale_price" inputmode="decimal" placeholder="<?php echo esc_attr( $shop_product ? wc_format_localized_price( $shop_product->get_regular_price() ) : '4,99' ); ?>"></label>
+                                <label>Produkt
+                                    <select name="sale_product">
+                                        <option value="0"><?php echo $sale['product'] ? 'Neues Produkt anlegen' : '– neues Produkt anlegen –'; ?></option>
+                                        <?php foreach ( $products as $pid => $plabel ) : ?>
+                                            <option value="<?php echo (int) $pid; ?>" <?php selected( $sale['product'], $pid ); ?>><?php echo esc_html( $plabel ); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </label>
+                            </div>
+                            <span class="description">Beim Verkaufen wird die Datei geschützt abgelegt und nur nach dem Kauf über WooCommerce ausgeliefert. Zurück auf „Kostenlos“ macht die Datei wieder öffentlich und setzt das Produkt auf Entwurf. Gelöscht wird nichts.</span>
+                        </fieldset>
+                        <?php endif; ?>
                         <p><?php submit_button( 'Speichern', 'primary', 'submit', false ); ?></p>
                     </form>
                 </details>
@@ -164,7 +193,7 @@ $total = (int) $query->found_posts;
                 <?php endif; ?>
 
                 <div class="mgd-ebook-admin__actions">
-                    <a href="<?php echo esc_url( $url ); ?>" download>Datei laden</a>
+                    <?php if ( ! $paid ) : ?><a href="<?php echo esc_url( $url ); ?>" download>Datei laden</a><?php else : ?><span></span><?php endif; ?>
                     <button type="button" class="mgd-ebook-admin__link" data-mgd-cover-edit data-book="<?php echo $id; ?>" data-title="<?php echo esc_attr( $title ); ?>" data-cover="<?php echo esc_url( $cover ); ?>">Cover ändern</button>
                     <?php if ( current_user_can( 'delete_post', $id ) ) : ?>
                         <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-mgd-confirm="<?php echo esc_attr( '„' . $title . '“ endgültig löschen? Das kann nicht rückgängig gemacht werden. Links und Shortcodes dazu funktionieren danach nicht mehr.' ); ?>">

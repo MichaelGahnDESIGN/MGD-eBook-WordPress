@@ -26,6 +26,7 @@ jobs:
       - run: php tests/title-downloads.php
       - run: php tests/shelf.php
       - run: php tests/schema.php
+      - run: php tests/shop.php
       - run: node --check mgd-ebook/divi/assets/divi-vb.js
       - run: python3 scripts/check-docs.py
       - run: python3 scripts/build-package.py

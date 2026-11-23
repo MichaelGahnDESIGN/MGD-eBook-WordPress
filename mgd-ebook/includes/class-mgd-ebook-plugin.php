@@ -10,6 +10,7 @@ final class MGD_Ebook_Plugin {
         $library->register();
         ( new MGD_Ebook_Downloads() )->register();
         MGD_Ebook_Schema::register();
+        MGD_Ebook_Shop::register();
         $renderer = new MGD_Ebook_Renderer();
         add_action( 'init', array( $renderer, 'register' ) );
         add_action( 'wp_enqueue_scripts', array( $renderer, 'assets' ) );

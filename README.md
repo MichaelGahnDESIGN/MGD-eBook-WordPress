@@ -22,7 +22,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
 ## Installieren (Schritt für Schritt)
 
-1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.6.0.zip` (die Zahl ändert sich).
+1. Lade die neueste ZIP-Datei herunter: [Releases](https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress/releases). Die Datei heißt `mgd-ebook-0.7.0.zip` (die Zahl ändert sich).
 2. Öffne in WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Wähle die ZIP-Datei aus und klicke auf **Jetzt installieren**.
 4. Klicke auf **Plugin aktivieren**.
@@ -124,6 +124,26 @@ Die Reihe und den Band trägst du beim Buch unter **Angaben, Anzeige und Lesepro
 
 Besucher sehen dann im Vorschau-Fenster **Leseprobe lesen**. Gezeigt werden Text und Bilder der ersten Seiten. Bei Büchern mit festem Seitenlayout (zum Beispiel aus Affinity) sieht das nicht genau aus wie im E-Book-Reader, aber alles ist lesbar.
 
+### eBooks verkaufen (mit WooCommerce)
+
+Du kannst kostenlose und kostenpflichtige eBooks gleichzeitig anbieten. Dafür muss WooCommerce installiert und eingerichtet sein (Zahlungsarten, Rechtstexte).
+
+1. Beim Buch **Angaben, Anzeige und Leseprobe** öffnen.
+2. Unten bei **Verkauf (WooCommerce)** auf **Verkaufen** stellen.
+3. Einen Preis eintragen (zum Beispiel `4,99`). Bei **Produkt** „neues Produkt anlegen“ lassen oder ein vorhandenes einfaches Produkt wählen.
+4. **Speichern**.
+
+Was dann passiert:
+
+- Das Plugin legt ein WooCommerce-Produkt an (virtuell, zum Herunterladen) oder nutzt das gewählte Produkt.
+- Die EPUB-Datei wird in den geschützten WooCommerce-Ordner verschoben. Nur Käufer bekommen sie, über den Download-Link in der Bestellbestätigung oder im Kundenkonto.
+- Im Vorschau-Fenster stehen Preis, **In den Warenkorb** und **Zum Produkt**. Die Leseprobe bleibt sichtbar.
+- Der „Download-Link mit Zähler“ funktioniert für dieses Buch nicht mehr. Käufer-Downloads werden trotzdem gezählt.
+
+⚠️ Auf Servern mit **Nginx** schützt die übliche `.htaccess`-Sperre nicht. WooCommerce zeigt dann einen Hinweis. Der Hoster muss den Ordner `wp-content/uploads/woocommerce_uploads` sperren. Der Ordner pro Buch hat zusätzlich einen zufälligen Namen.
+
+Zurück auf **Kostenlos** stellen: Die Datei wird wieder öffentlich, das Produkt wird auf Entwurf gesetzt. Gelöscht wird nichts.
+
 ### Downloads zählen
 
 - Bei jedem Buch steht, wie oft es heruntergeladen wurde.
@@ -182,6 +202,7 @@ php tests/cover-save.php                            # Test Cover speichern (auch
 php tests/title-downloads.php                       # Test Angaben, Anzeige, Zähler
 php tests/shelf.php                                 # Test Bücherregal
 php tests/schema.php                                # Test Google-Infos + Divi-Module
+php tests/shop.php                                  # Test Verkauf (Preise, kostenlos/verkaufen)
 python3 scripts/build-package.py                    # ZIP bauen (landet in dist/)
 ```
 

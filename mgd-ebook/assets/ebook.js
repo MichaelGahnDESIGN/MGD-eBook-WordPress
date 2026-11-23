@@ -3,7 +3,7 @@
   'use strict';
   var LOCK = 'mgd-ebook-lock';
 
-  // Fenster oeffnen
+  // Fenster oeffnen - im Capture, sonst schnappen sich Theme-Skripte (Divi Smooth Scroll) den Klick vorher
   document.addEventListener('click', function (event) {
     var opener = event.target.closest('[data-mgd-ebook-open]');
     if (opener) {
@@ -11,6 +11,7 @@
       // Alter Browser ohne <dialog>: Link laedt einfach die Datei
       if (!dialog || typeof dialog.showModal !== 'function') { return; }
       event.preventDefault();
+      event.stopPropagation();
       dialog.showModal();
       document.body.classList.add(LOCK);
       return;
@@ -39,7 +40,7 @@
     if (event.target.matches && event.target.matches('dialog.mgd-ebook__dialog')) {
       event.target.close();
     }
-  });
+  }, true);
 
   // Scroll-Sperre wieder weg (auch bei Escape)
   document.addEventListener('close', function (event) {

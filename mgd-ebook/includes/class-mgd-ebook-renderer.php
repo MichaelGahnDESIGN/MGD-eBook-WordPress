@@ -74,6 +74,8 @@ final class MGD_Ebook_Renderer {
         $data = array(
             'uid' => 'mgd-ebook-' . $id . '-' . ( ++self::$counter ),
             'url' => $free ? MGD_Ebook_Downloads::link( $id ) : '',
+            // ohne JavaScript: kostenlos = Download, Verkauf = Produktseite
+            'cover_href' => $free ? MGD_Ebook_Downloads::link( $id ) : (string) apply_filters( 'mgd_ebook_cover_href', '', $id ),
             'title' => MGD_Ebook_Library::title( $id ),
             'book' => $book,
             'show' => $show,
