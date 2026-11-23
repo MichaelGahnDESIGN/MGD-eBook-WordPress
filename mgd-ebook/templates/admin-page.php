@@ -16,6 +16,8 @@ $total = (int) $query->found_posts;
         </div>
         <p class="mgd-ebook-admin__count"><strong><?php echo (int) $total; ?></strong> <?php echo 1 === $total ? 'eBook' : 'eBooks'; ?></p>
     </header>
+    <?php // WordPress schiebt Meldungen sonst in den dunklen Kopf (unlesbar) - hier ist die offizielle Stelle ?>
+    <hr class="wp-header-end">
 
     <?php foreach ( $messages as $message ) : ?>
         <div class="notice notice-<?php echo esc_attr( $message[0] ); ?> is-dismissible"><p><?php echo esc_html( $message[1] ); ?></p></div>

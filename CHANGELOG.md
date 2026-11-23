@@ -10,6 +10,7 @@
 - Zurück auf „Kostenlos“: Die Datei ist wieder öffentlich, das Produkt wird auf Entwurf gesetzt. Gelöscht wird nichts.
 - Google-Infos zeigen bei verkauften Büchern den echten Preis.
 - Behoben: Mit Divi öffnete sich das Vorschau-Fenster bei manchen Links nicht, weil Divi den Klick abgefangen hat.
+- Behoben: Meldungen wie „Einstellungen gespeichert“ landeten im dunklen Kopfbereich der eBook-Seite und waren nicht lesbar. Sie stehen jetzt darunter.
 - Ohne WooCommerce ändert sich nichts, alle Bücher bleiben kostenlos.
 
 ## 0.6.0 – Divi-Module, Google-Infos und neues Design
