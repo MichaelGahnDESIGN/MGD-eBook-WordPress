@@ -149,6 +149,11 @@ final class MGD_Ebook_Admin {
         $sample_ok = MGD_Ebook_Sample::update( $id, $sample_on, (int) ( $_POST['sample_pages'] ?? MGD_Ebook_Sample::DEFAULT_PAGES ) );
         $title = MGD_Ebook_Library::title( $id );
         $messages = array( array( 'success', 'Einstellungen für „' . $title . '“ gespeichert.' ) );
+        // Verkauf nur anfassen, wenn das Formular den Bereich hatte (WooCommerce aktiv)
+        if ( isset( $_POST['sale_mode'] ) ) {
+            $sale_error = MGD_Ebook_Shop::update( $id, sanitize_key( wp_unslash( $_POST['sale_mode'] ) ), sanitize_text_field( wp_unslash( $_POST['sale_price'] ?? '' ) ), absint( $_POST['sale_product'] ?? 0 ) );
+            if ( '' !== $sale_error ) { $messages[] = array( 'error', $sale_error ); }
+        }
         if ( $sample_on && ! $sample_ok ) { $messages[] = array( 'error', 'Die Leseprobe konnte nicht erstellt werden. In dieser EPUB-Datei wurden keine lesbaren Seiten gefunden.' ); }
         $this->store_messages( $messages );
         $this->back();

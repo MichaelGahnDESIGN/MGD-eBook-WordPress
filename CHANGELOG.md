@@ -1,5 +1,18 @@
 # Änderungen
 
+## 0.7.0 – eBooks verkaufen mit WooCommerce
+
+- Pro Buch einstellbar: **kostenlos** (wie bisher) oder **verkaufen**. Beides geht gleichzeitig auf derselben Website.
+- Beim Verkaufen legt das Plugin auf Wunsch ein WooCommerce-Produkt mit Preis an oder nutzt ein vorhandenes einfaches Produkt.
+- Die EPUB-Datei wird dann geschützt abgelegt. Laden kann sie nur, wer gekauft hat (Download über WooCommerce). Der direkte Link und der Zähl-Link geben die Datei nicht mehr heraus.
+- Im Vorschau-Fenster stehen dann Preis, **In den Warenkorb** und **Zum Produkt**. Die Leseprobe bleibt.
+- Käufer-Downloads zählen im Download-Zähler mit.
+- Zurück auf „Kostenlos“: Die Datei ist wieder öffentlich, das Produkt wird auf Entwurf gesetzt. Gelöscht wird nichts.
+- Google-Infos zeigen bei verkauften Büchern den echten Preis.
+- Behoben: Mit Divi öffnete sich das Vorschau-Fenster bei manchen Links nicht, weil Divi den Klick abgefangen hat.
+- Behoben: Meldungen wie „Einstellungen gespeichert“ landeten im dunklen Kopfbereich der eBook-Seite und waren nicht lesbar. Sie stehen jetzt darunter.
+- Ohne WooCommerce ändert sich nichts, alle Bücher bleiben kostenlos.
+
 ## 0.6.0 – Divi-Module, Google-Infos und neues Design
 
 - **Divi 5:** Zwei neue Module im Divi Builder: **MGD eBook** (ein Buch aus einer Liste mit allen eBooks auswählen) und **MGD Bücherregal** (eine Reihe wählen oder IDs eintragen). Im Builder siehst du sofort die echte Vorschau. Abstände, Rahmen, Hintergrund und Animation stellst du wie bei jedem Divi-Modul ein. Ohne Divi 5 passiert nichts, die Shortcodes gehen weiter.

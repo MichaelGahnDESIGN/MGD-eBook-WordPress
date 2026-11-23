@@ -292,3 +292,12 @@ body.mgd-ebook-lock { overflow: hidden; }
   .mgd-ebook__download, .mgd-ebook__sample-toggle { border: 2px solid ButtonText; }
   .mgd-ebook__cover::before, .mgd-ebook__cover::after, .mgd-ebook-regal .mgd-ebook__stage::after { display: none; }
 }
+
+/* Verkauf: Preis + Warenkorb */
+.mgd-ebook__price { flex: 1 1 100%; font-size: 1.45rem; font-weight: 750; letter-spacing: -.01em; }
+.mgd-ebook__price del { opacity: .55; font-weight: 500; font-size: .8em; margin-right: .3em; }
+.mgd-ebook__price ins { text-decoration: none; }
+.mgd-ebook__more { color: var(--mgd-ebook-ink); font-weight: 600; text-underline-offset: 3px; }
+.mgd-ebook__more:hover { color: var(--mgd-ebook-accent); }
+.mgd-ebook__unavailable { margin: 0; color: var(--mgd-ebook-muted); font-style: italic; }
+@media (max-width: 640px) { .mgd-ebook__price { text-align: center; } }

@@ -151,3 +151,21 @@ body.mgd-ebook-editing { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .mgd-ebook-admin__more > summary::after { transition: none; }
 }
+
+/* Verkauf */
+.mgd-ebook-admin__sale { margin: 14px 0 0; padding: 10px 12px 8px; border: 1px solid var(--line); border-radius: 10px; background: #fbf8f2; }
+.mgd-ebook-admin__sale legend { font-weight: 600; padding: 0 6px; }
+.mgd-ebook-admin__sale > label { display: inline-flex; align-items: center; gap: 6px; margin: 4px 16px 4px 0; }
+.mgd-ebook-admin__sale-fields { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 8px 0 6px; }
+.mgd-ebook-admin__sale-fields label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; font-weight: 600; color: #3c4a46; }
+.mgd-ebook-admin__sale-fields input { width: 110px; border-radius: 6px; }
+.mgd-ebook-admin__sale-fields select { max-width: 260px; border-radius: 6px; }
+.mgd-ebook-admin__sale .description { display: block; margin-top: 2px; }
+.mgd-ebook-admin__sale-note { margin: 4px 0 12px; padding: 10px 12px; border-radius: 10px; background: #fbf3e4; border-left: 4px solid #d6a24b; font-size: 13px; }
+
+/* Meldungen immer lesbar, auch falls ein anderes Plugin sie in den Kopf schiebt */
+.mgd-ebook-admin .notice,
+.mgd-ebook-admin .notice p { color: #1d2327; }
+.mgd-ebook-admin .notice { margin: 16px 0; border-radius: 8px; }
+.mgd-ebook-admin hr.wp-header-end { margin: 0; border: 0; }
+.mgd-ebook-admin__hero .notice { flex-basis: 100%; }
