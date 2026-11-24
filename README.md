@@ -12,7 +12,7 @@ Eine **EPUB-Datei** ist ein E-Book. Sie funktioniert auf Tolino, Kobo, Apple Boo
 
 WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
-1. Du bekommst im WordPress-Menü einen neuen Punkt **eBook**.
+1. Du bekommst im WordPress-Menü den Punkt **MGD Tools** mit der Seite **eBook**.
 2. Dort lädst du EPUB-Dateien hoch.
 3. Zu jeder Datei bekommst du:
    - einen **Link** (zum Verlinken, zum Beispiel bei einem Button im Divi Editor),
@@ -26,7 +26,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 2. Öffne in WordPress: **Plugins → Installieren → Plugin hochladen**.
 3. Wähle die ZIP-Datei aus und klicke auf **Jetzt installieren**.
 4. Klicke auf **Plugin aktivieren**.
-5. Links im Menü erscheint jetzt **eBook**.
+5. Links im Menü erscheint jetzt **MGD Tools**. Dort ist die Seite **eBook**.
 
 **Updates:** Neue Versionen erscheinen ganz normal unter **Dashboard → Aktualisierungen**, genau wie bei den anderen MGD-Plugins. WordPress fragt dafür bei theme.michael-gahn.de nach der neuesten Version und prüft die Datei vor dem Einspielen (Prüfsumme). Das Update startest du selbst mit einem Klick, es läuft nie automatisch.
 
@@ -34,7 +34,7 @@ WordPress erlaubt normalerweise keine EPUB-Dateien. Dieses Plugin ändert das:
 
 ### EPUB hochladen
 
-1. Klicke im Menü auf **eBook**.
+1. Klicke im Menü auf **MGD Tools → eBook**.
 2. Klicke bei „EPUB hochladen“ auf **Dateien auswählen**. Du kannst mehrere Dateien auf einmal wählen.
 3. Klicke auf **Hochladen**.
 4. Oben erscheint eine Meldung. Grün heißt: hat geklappt. Rot heißt: diese Datei wurde abgelehnt, mit Grund.
@@ -168,14 +168,14 @@ In der Liste auf **Löschen** klicken und die Rückfrage bestätigen. Die Datei 
 ## Datenschutz
 
 - Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
-- So schaltest du das ab: Menü **eBook → Info und Updates** öffnen, den Haken bei „Installation bei Michael Gahn DESIGN melden“ entfernen und **Speichern** klicken. Der Eintrag auf theme.michael-gahn.de wird dann gelöscht. Das Plugin funktioniert genauso weiter.
+- So schaltest du das ab: Menü **MGD Tools → Übersicht und Updates** öffnen, den Haken bei „Installation bei Michael Gahn DESIGN melden“ entfernen und **Speichern** klicken. Der Eintrag auf theme.michael-gahn.de wird dann gelöscht. Das Plugin funktioniert genauso weiter.
 - Den Schalter sehen nur Administratoren.
 - Für Updates und die Liste „Weitere Plugins“ fragt WordPress bei theme.michael-gahn.de und GitHub an. Dabei sehen die Server die Adresse (IP) deines Servers.
 - Beim Löschen des Plugins wird nur der Melde-Status entfernt. Deine eBooks bleiben in der Mediathek.
 
 ## Weitere Plugins
 
-Unter **eBook → Info und Updates** zeigt das Plugin andere MGD-Plugins als Karten (Pluginempfehlung), mit Bildern, Kategorien, Suche und Filtern. Mit **Details** siehst du mehr. Mit **Installieren** wird ein kostenloses Plugin installiert, aber **nie automatisch aktiviert**. Den Knopf sehen nur Administratoren.
+Unter **MGD Tools → Weitere Plugins** zeigt das Plugin andere MGD-Plugins als Karten (Pluginempfehlung), mit Bildern, Kategorien, Suche und Filtern. Mit **Details** siehst du mehr. Mit **Installieren** wird ein kostenloses Plugin installiert, aber **nie automatisch aktiviert**. Den Knopf sehen nur Administratoren.
 
 ## Wenn etwas nicht klappt
 
@@ -194,9 +194,6 @@ Unter **eBook → Info und Updates** zeigt das Plugin andere MGD-Plugins als Kar
 find mgd-ebook -name '*.php' -exec php -l {} \;   # PHP-Syntax prüfen
 node --check mgd-ebook/assets/ebook.js              # JavaScript prüfen
 php tests/epub-parser.php                           # Parser-Test
-php tests/updater.php                               # Test Update-Weg und Prüfsumme
-php tests/install.php                               # Test Installation melden (Free-Lizenz)
-php tests/catalog-feed.php                          # Test Empfehlungs-Feed
 php tests/kit-wiring.php                            # Test Baukasten-Einbau
 php tests/cover-save.php                            # Test Cover speichern (auch mit Bild-Plugins)
 php tests/title-downloads.php                       # Test Angaben, Anzeige, Zähler
@@ -211,7 +208,6 @@ Zum Testen in einem echten WordPress gibt es `tests/compose.yaml` (Docker). Mehr
 Weitere Dokumente:
 
 - [Plugin-Verwaltung und Updates](docs/WORDPRESS-VERWALTUNG.md)
-- [Plugin-Empfehlung (Weitere Plugins)](docs/PLUGIN-KATALOG.md)
 - [Neue Version veröffentlichen](docs/RELEASE.md)
 - [Sicherheit](SECURITY.md)
 - [Änderungen](CHANGELOG.md)

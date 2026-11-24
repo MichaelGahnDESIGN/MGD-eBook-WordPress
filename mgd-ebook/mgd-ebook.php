@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: MGD eBook
- * Plugin URI: https://github.com/MichaelGahnDESIGN/MGD-eBook-WordPress
- * Description: EPUB-Dateien hochladen, als Download anbieten und per Shortcode mit Cover und Vorschau-Fenster zeigen. Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
+ * Plugin URI: https://theme.michael-gahn.de/plugins/mgd-ebook
+ * Description: EPUB-Dateien hochladen, als Download oder zum Kauf anbieten und mit Cover, Vorschau und Leseprobe zeigen.
  * Version: 0.7.0
  * Requires at least: 6.5
  * Requires PHP: 8.1
@@ -46,17 +46,18 @@ spl_autoload_register( static function ( string $class ): void {
 	}
 } );
 
-// Updater vom Baukasten, startet auch den Install-Melder - alter Updater, Install-Client und Admin-Tools sind raus
-MGD_Ebook_Plugin::$updater = \Mgd\Ebook\Kit\Platform\WordPress\Setup::updater( __FILE__, 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', admin_url( 'admin.php?page=mgd-ebook-plugins' ) );
-// Reste vom alten Updater wegräumen, 1x pro Version
-\Mgd\Ebook\Kit\Platform\WordPress\Setup::cleanupLegacy( 'mgd-ebook', MGD_EBOOK_VERSION, array( 'mgd_admin_release_mgd-ebook', 'mgd_ebook_update_manifest' ) );
+// Updater + MGD Tools Menü vom Baukasten
+use Mgd\Ebook\Kit\Platform\WordPress\Setup;
+use Mgd\Ebook\Kit\Platform\WordPress\Tools;
 
-// Links Einstellungen + Info in der Plugin-Liste
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), static function ( array $links ): array {
-	array_unshift(
-		$links,
-		'<a href="' . esc_url( admin_url( 'admin.php?page=mgd-ebook' ) ) . '">eBooks</a>',
-		'<a href="' . esc_url( admin_url( 'admin.php?page=mgd-ebook-plugins' ) ) . '">Info und Updates</a>'
-	);
-	return $links;
-} );
+MGD_Ebook_Plugin::$updater = Setup::updater( __FILE__, 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', Tools::url() );
+// Reste vom alten Updater wegräumen, 1x pro Version
+Setup::cleanupLegacy( 'mgd-ebook', MGD_EBOOK_VERSION, array( 'mgd_admin_release_mgd-ebook', 'mgd_ebook_update_manifest' ) );
+
+// Seite eBook unter MGD Tools - Seiten-Kennung bleibt mgd-ebook, Recht bleibt upload_files
+Setup::tools( __FILE__, 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', MGD_Ebook_Plugin::$updater, array(
+	'slug'     => 'mgd-ebook',
+	'repo'     => 'MGD-eBook-WordPress',
+	'settings' => array( 'page' => 'mgd-ebook', 'title' => 'eBook', 'cap' => 'upload_files', 'render' => static function (): void { MGD_Ebook_Plugin::$admin?->page(); } ),
+	'license'  => false,
+) );

@@ -12,9 +12,6 @@ So wird aus dem Code eine Version, die sich auf allen Websites über das normale
    ```bash
    find mgd-ebook -name '*.php' -exec php -l {} \;
    php tests/epub-parser.php
-   php tests/updater.php
-   php tests/install.php
-   php tests/catalog-feed.php
    ```
 4. **ZIP bauen:**
    ```bash

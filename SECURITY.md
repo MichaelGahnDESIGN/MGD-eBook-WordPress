@@ -4,7 +4,7 @@ Bitte melde Sicherheitsprobleme **nicht** öffentlich als Issue. Schreibe stattd
 
 ## Was das Plugin tut
 
-- Nur Benutzer mit dem Recht „Dateien hochladen“ sehen den Menüpunkt **eBook**.
+- Nur Benutzer mit dem Recht „Dateien hochladen“ sehen die Seite **MGD Tools → eBook**.
 - Jede Aktion (Hochladen, Löschen) ist durch einen Sicherheits-Code (Nonce) und eine Rechteprüfung geschützt.
 - Eine .epub-Datei wird vor dem Speichern geprüft: gültiges ZIP, richtige EPUB-Kennung, lesbare Paketdatei. Sie wird **nicht entpackt**. Nur Titel, Autor, Beschreibung und das Cover werden gelesen.
 - Gegen kaputte oder bösartige Dateien gibt es Grenzen für Größe und Anzahl der Einträge. XML mit Entitäten wird abgelehnt.

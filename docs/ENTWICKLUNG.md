@@ -7,17 +7,15 @@
 | `mgd-ebook/mgd-ebook.php` | Startdatei, Plugin-Kopf, Updater-Anmeldung |
 | `includes/class-mgd-ebook-epub.php` | Liest eine EPUB-Datei (Prüfung, Titel, Autor, Cover) |
 | `includes/class-mgd-ebook-library.php` | Erlaubt .epub, speichert Daten und Cover, Liste |
-| `includes/class-mgd-ebook-admin.php` | Menü, Uploader, Löschen |
+| `includes/class-mgd-ebook-admin.php` | Seite „eBook“ (Uploader, Liste, Löschen, Angaben, Verkauf). Das Menü stellt der Baukasten (MGD Tools) |
 | `includes/class-mgd-ebook-renderer.php` | Shortcode `[mgd_ebook]` |
 | `templates/` | HTML für Backend-Seite und Shortcode |
 | `assets/` | CSS und JavaScript |
-| `includes/Kit/` | Baukasten: Updates, Installation melden, Weitere Plugins, Seite „Info und Updates“. Erzeugt mit `php bin/build-plugin-kit.php mgd-ebook --platform=wordpress --namespace='Mgd\Ebook\Kit' --dir=includes/Kit` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
-| `includes/class-mgd-ebook-updater.php`, `includes/install-client/`, `includes/class-mgd-plugin-admin-tools.php` | Alte Bausteine bis 0.3.0. Werden nicht mehr geladen, kommen in einer späteren Version raus |
+| `includes/Kit/` | Baukasten 1.12.1: Updates, Installation melden, MGD Tools (Menü, Übersicht, Weitere Plugins, Lizenz, Farbwähler). Erzeugt mit `php bin/build-plugin-kit.php mgd-ebook --platform=wordpress --namespace='Mgd\Ebook\Kit' --dir=includes/Kit` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
 | `divi/` | Divi-5-Module „MGD eBook“ und „MGD Bücherregal“: `module.json` (PHP + JS gemeinsam), `class-mgd-ebook-divi.php` (Anmeldung, Vorschau-Schnittstelle, Ausgabe), `assets/divi-vb.js` (Builder, reines JavaScript ohne Build über `window.divi` und `window.vendor`) |
 | `includes/class-mgd-ebook-shop.php` | Verkauf über WooCommerce: Produkt anlegen/verbinden, Datei schützen und zurückholen, Preis im Fenster, Käufer-Downloads zählen |
 | `includes/class-mgd-ebook-schema.php` | Google-Infos (schema.org Book als JSON-LD) |
 | `uninstall.php` | Meldet beim Löschen bei theme.michael-gahn.de ab und entfernt die Baukasten-Daten. eBooks bleiben |
-| `includes/plugin-catalog/`, `assets/plugin-catalog/` | Pluginempfehlung (in allen MGD-Plugins gleich) |
 
 ## Wie werden Daten gespeichert?
 
@@ -36,9 +34,6 @@ Darum erscheinen EPUB-Dateien auch in der normalen Mediathek, und der Divi Edito
 
 ```bash
 php tests/epub-parser.php    # EPUB lesen
-php tests/updater.php        # Update-Weg und Prüfsumme
-php tests/install.php        # Installation melden, Schalter aus/an
-php tests/catalog-feed.php   # Empfehlungs-Feed (Adresse, 15 Minuten Cache)
 php tests/kit-wiring.php     # Baukasten angeschlossen, alte Updater aus
 php tests/schema.php         # Google-Infos + Divi-Modul-Beschreibung
 php tests/shop.php           # Verkauf: Preise, kostenlos/verkaufen
@@ -55,3 +50,11 @@ docker compose -f tests/compose.yaml exec -T cli wp --path=/var/www/html plugin 
 ```
 
 Dann `http://localhost:8089/wp-admin/` öffnen. Aufräumen: `docker compose -f tests/compose.yaml down`.
+
+## Prüfen, ob das Plugin fertig ist
+
+Im Repository MichaThemeV5-Pro (Stand `origin/main`):
+
+```bash
+php bin/check-plugin-ready.php <Ordner-dieses-Repos> --platform=wordpress --product=mgd-ebook
+```

@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) || exit;
 /** Startet alle Teile des Plugins. */
 final class MGD_Ebook_Plugin {
     public static ?\Mgd\Ebook\Kit\Platform\WordPress\Updater $updater = null;
+    public static ?MGD_Ebook_Admin $admin = null;
 
     public static function boot(): void {
         $library = new MGD_Ebook_Library();
@@ -15,7 +16,8 @@ final class MGD_Ebook_Plugin {
         add_action( 'init', array( $renderer, 'register' ) );
         add_action( 'wp_enqueue_scripts', array( $renderer, 'assets' ) );
         if ( is_admin() ) {
-            ( new MGD_Ebook_Admin( $library ) )->register();
+            self::$admin = new MGD_Ebook_Admin( $library );
+            self::$admin->register();
         }
     }
 }
