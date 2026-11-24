@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-/** Backend: Menüpunkt "eBook" mit Uploader und Liste. */
+/** Backend: Seite "eBook" (unter MGD Tools) mit Uploader und Liste. */
 final class MGD_Ebook_Admin {
     private const PAGE = 'mgd-ebook';
     private const PER_PAGE = 20;
@@ -11,7 +11,6 @@ final class MGD_Ebook_Admin {
     public function __construct( private MGD_Ebook_Library $library ) {}
 
     public function register(): void {
-        add_action( 'admin_menu', array( $this, 'menu' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'assets' ) );
         add_action( 'admin_post_mgd_ebook_upload', array( $this, 'upload' ) );
         add_action( 'admin_post_mgd_ebook_delete', array( $this, 'delete' ) );
@@ -22,15 +21,8 @@ final class MGD_Ebook_Admin {
         add_action( 'wp_ajax_mgd_ebook_cover_reset', array( $this, 'ajax_cover_reset' ) );
     }
 
-    public function menu(): void {
-        add_menu_page( 'eBook', 'eBook', 'upload_files', self::PAGE, array( $this, 'page' ), 'dashicons-book-alt', 25 );
-        add_submenu_page( self::PAGE, 'eBooks', 'eBooks', 'upload_files', self::PAGE, array( $this, 'page' ) );
-        // Dashboard vom Baukasten: Info, Updates, Weitere Plugins, Installation melden
-        add_submenu_page( self::PAGE, 'Info und Updates', 'Info und Updates', 'manage_options', 'mgd-ebook-plugins', array( $this, 'plugins_page' ) );
-    }
-
     public function assets( string $hook ): void {
-        if ( 'toplevel_page_' . self::PAGE !== $hook ) { return; }
+        if ( ! str_ends_with( $hook, '_page_' . self::PAGE ) ) { return; }
         wp_enqueue_style( 'mgd-ebook-admin', MGD_EBOOK_URL . 'assets/ebook-admin.css', array(), MGD_EBOOK_VERSION );
         // Mediathek-Fenster fuer die Cover-Auswahl
         wp_enqueue_media();
@@ -49,42 +41,6 @@ final class MGD_Ebook_Admin {
         $messages = $this->take_messages();
         $max_upload = size_format( wp_max_upload_size() );
         require MGD_EBOOK_DIR . 'templates/admin-page.php';
-    }
-
-    public function plugins_page(): void {
-        if ( ! current_user_can( 'manage_options' ) ) { wp_die( 'Nicht berechtigt.', '', array( 'response' => 403 ) ); }
-        $list = $this->recommendations();
-        // parent leer = kein eigener Menüpunkt, Lizenz bleibt aus
-        $dash = \Mgd\Ebook\Kit\Platform\WordPress\Setup::dashboard( 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', MGD_Ebook_Plugin::$updater, $list, false, '' );
-        if ( null === $dash ) { echo '<div class="wrap"><p>Die Seite konnte gerade nicht geladen werden.</p></div>'; return; }
-        $dash->page();
-    }
-
-    private function recommendations(): ?\Mgd\Ebook\Kit\Catalog\Recommendations {
-        return \Mgd\Ebook\Kit\Platform\WordPress\Setup::recommendations( 'mgd-ebook', 'wordpress', 'mgd-ebook', $this->fallback_plugins(), 'MGD-eBook-WordPress' );
-    }
-
-    // Ersatzliste aus plugin-catalog/plugins.json, falls theme.michael-gahn.de nicht antwortet
-    private function fallback_plugins(): array {
-        $raw = file_get_contents( MGD_EBOOK_DIR . 'includes/plugin-catalog/plugins.json' );
-        $data = is_string( $raw ) ? json_decode( $raw, true ) : null;
-        $out = array();
-        foreach ( is_array( $data ) ? $data : array() as $row ) {
-            if ( is_array( $row ) && ! empty( $row['slug'] ) ) {
-                // Kategorie, Häkchen + Basenames für die neue Kollektion-Ansicht, Rest prüft der Baukasten
-                $out[] = array(
-                    'slug' => (string) $row['slug'],
-                    'name' => (string) ( $row['name'] ?? '' ),
-                    'description' => (string) ( $row['description'] ?? '' ),
-                    'version' => '',
-                    'category' => (string) ( $row['category'] ?? '' ),
-                    'features' => (array) ( $row['features'] ?? array() ),
-                    'basenames' => (array) ( $row['basenames'] ?? array() ),
-                    'tier' => (string) ( $row['tier'] ?? 'free' ),
-                );
-            }
-        }
-        return $out;
     }
 
     public function upload(): void {

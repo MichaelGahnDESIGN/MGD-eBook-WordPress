@@ -18,9 +18,6 @@ jobs:
       - run: node --check mgd-ebook/assets/ebook.js
       - run: node --check mgd-ebook/assets/ebook-admin.js
       - run: php tests/epub-parser.php
-      - run: php tests/updater.php
-      - run: php tests/install.php
-      - run: php tests/catalog-feed.php
       - run: php tests/kit-wiring.php
       - run: php tests/cover-save.php
       - run: php tests/title-downloads.php
