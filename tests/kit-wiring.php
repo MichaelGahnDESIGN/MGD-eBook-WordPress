@@ -21,6 +21,7 @@ check( 'Plugin-Kopf genormt: Name MGD eBook, ein Autor, eine Beschreibung', str_
 check( 'Update URI zeigt auf theme.michael-gahn.de', str_contains( $main, 'Update URI: https://theme.michael-gahn.de/plugin-updates/mgd-ebook.json' ) );
 check( 'Baukasten-Updater mit Produkt mgd-ebook', str_contains( $main, "Setup::updater( __FILE__, 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook'" ) );
 check( 'Seite unter MGD Tools: Kennung mgd-ebook, Recht upload_files', str_contains( $main, "Setup::tools( __FILE__, 'mgd-ebook'" ) && str_contains( $main, "'page' => 'mgd-ebook'" ) && str_contains( $main, "'cap' => 'upload_files'" ) );
+check( 'Alte Seiten-Kennung mgd-ebook-plugins leitet um (legacy)', str_contains( $main, "'legacy' => array( 'mgd-ebook-plugins' )" ) );
 check( 'Lizenz auf der eBook-Seite aus (kein Lizenzfeld)', str_contains( $main, "'license'  => false" ) );
 check( 'Kein eigenes Menü mehr', ! str_contains( $admin, 'add_menu_page' ) && ! str_contains( $admin, 'add_submenu_page' ) );
 check( 'Seiten-Skript lädt auch unter MGD Tools (Hook endet auf _page_mgd-ebook)', str_contains( $admin, "'_page_' . self::PAGE" ) );
