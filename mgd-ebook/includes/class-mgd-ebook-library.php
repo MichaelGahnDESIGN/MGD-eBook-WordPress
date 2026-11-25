@@ -274,7 +274,7 @@ final class MGD_Ebook_Library {
         return is_file( trailingslashit( $uploads['basedir'] ) . $relative ) ? trailingslashit( $uploads['baseurl'] ) . $relative : '';
     }
 
-    /** Kostenlos herunterladbar? Verkauf über WooCommerce kommt in 0.7.0, bis dahin immer ja. */
+    /** Kostenlos herunterladbar? Verkauf über WooCommerce (Klasse MGD_Ebook_Shop) macht ein Buch zum Kaufbuch. */
     public static function is_free( int $attachment_id ): bool {
         return (bool) apply_filters( 'mgd_ebook_is_free', true, $attachment_id );
     }

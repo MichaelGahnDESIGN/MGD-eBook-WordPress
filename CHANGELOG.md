@@ -1,11 +1,13 @@
 # Änderungen
 
-## Unveröffentlicht
+## [2.1.1] - 2026-11-25
+
+- Gemeinsame Verwaltung unter MGD Tools, einheitliche Darstellung, Icons.
 - Die Seite eBook hängt jetzt unter dem gemeinsamen Menü **MGD Tools** (eigenes Menü entfernt, Adresse `admin.php?page=mgd-ebook` bleibt, Recht „Dateien hochladen“ bleibt).
 - Übersicht, Updates, „Weitere Plugins“ und die Lizenz verwaltest du unter MGD Tools. Die alte Seite „Info und Updates“ im eBook-Menü ist weg.
 - Neue Icons (128 und 256 Pixel) und genormter Plugin-Kopf.
 - Alte Bausteine (Updater, Installations-Meldung, Katalogseite, Admin-Tools) aus dem Plugin entfernt. Der Baukasten übernimmt das.
-- Baukasten auf 1.12.1 aktualisiert.
+- Baukasten auf 1.15.0 aktualisiert.
 
 ## 0.7.0 – eBooks verkaufen mit WooCommerce
 

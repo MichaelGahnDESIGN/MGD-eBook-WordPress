@@ -11,7 +11,7 @@
 | `includes/class-mgd-ebook-renderer.php` | Shortcode `[mgd_ebook]` |
 | `templates/` | HTML für Backend-Seite und Shortcode |
 | `assets/` | CSS und JavaScript |
-| `includes/Kit/` | Baukasten 1.12.1: Updates, Installation melden, MGD Tools (Menü, Übersicht, Weitere Plugins, Lizenz, Farbwähler). Erzeugt mit `php bin/build-plugin-kit.php mgd-ebook --platform=wordpress --namespace='Mgd\Ebook\Kit' --dir=includes/Kit` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
+| `includes/Kit/` | Baukasten 1.15.0: Updates, Installation melden, MGD Tools (Menü, Übersicht, Weitere Plugins, Lizenz, Farbwähler). Erzeugt mit `php bin/build-plugin-kit.php mgd-ebook --platform=wordpress --namespace='Mgd\Ebook\Kit' --dir=includes/Kit` aus MichaThemeV5-Pro, **nicht von Hand ändern** |
 | `divi/` | Divi-5-Module „MGD eBook“ und „MGD Bücherregal“: `module.json` (PHP + JS gemeinsam), `class-mgd-ebook-divi.php` (Anmeldung, Vorschau-Schnittstelle, Ausgabe), `assets/divi-vb.js` (Builder, reines JavaScript ohne Build über `window.divi` und `window.vendor`) |
 | `includes/class-mgd-ebook-shop.php` | Verkauf über WooCommerce: Produkt anlegen/verbinden, Datei schützen und zurückholen, Preis im Fenster, Käufer-Downloads zählen |
 | `includes/class-mgd-ebook-schema.php` | Google-Infos (schema.org Book als JSON-LD) |

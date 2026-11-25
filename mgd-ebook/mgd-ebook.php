@@ -3,7 +3,7 @@
  * Plugin Name: MGD eBook
  * Plugin URI: https://theme.michael-gahn.de/plugins/mgd-ebook
  * Description: EPUB-Dateien hochladen, als Download oder zum Kauf anbieten und mit Cover, Vorschau und Leseprobe zeigen.
- * Version: 0.7.0
+ * Version: 2.1.1
  * Requires at least: 6.5
  * Requires PHP: 8.1
  * Author: Michael Gahn DESIGN
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MGD_EBOOK_VERSION', '0.7.0' );
+define( 'MGD_EBOOK_VERSION', '2.1.1' );
 define( 'MGD_EBOOK_FILE', __FILE__ );
 define( 'MGD_EBOOK_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MGD_EBOOK_URL', plugin_dir_url( __FILE__ ) );
@@ -58,6 +58,6 @@ Setup::cleanupLegacy( 'mgd-ebook', MGD_EBOOK_VERSION, array( 'mgd_admin_release_
 Setup::tools( __FILE__, 'mgd-ebook', 'wordpress', MGD_EBOOK_VERSION, 'MGD eBook', MGD_Ebook_Plugin::$updater, array(
 	'slug'     => 'mgd-ebook',
 	'repo'     => 'MGD-eBook-WordPress',
-	'settings' => array( 'page' => 'mgd-ebook', 'title' => 'eBook', 'cap' => 'upload_files', 'render' => static function (): void { MGD_Ebook_Plugin::$admin?->page(); } ),
+	'settings' => array( 'page' => 'mgd-ebook', 'title' => 'eBook', 'cap' => 'upload_files', 'legacy' => array( 'mgd-ebook-plugins' ), 'render' => static function (): void { MGD_Ebook_Plugin::$admin?->page(); } ),
 	'license'  => false,
 ) );
