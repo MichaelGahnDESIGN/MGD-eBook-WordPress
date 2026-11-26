@@ -175,6 +175,13 @@ In der Liste auf **Löschen** klicken und die Rückfrage bestätigen. Die Datei 
 
 ## Weitere Plugins
 
+## Plugins an- und ausschalten, Lizenz ansehen
+
+Unter **MGD Tools → Übersicht und Updates** siehst du alle MGD-Plugins auf deiner Seite.
+- Bei jedem Plugin gibt es einen Schalter zum **Aktivieren** und **Deaktivieren**. Du musst dafür nicht in die normale Plugin-Liste.
+- Daneben steht die **Lizenz**: Free oder Pro, und ob sie gültig ist.
+- MGD eBook ist kostenlos, hier steht also „Free“.
+
 Unter **MGD Tools → Weitere Plugins** zeigt das Plugin andere MGD-Plugins als Karten (Pluginempfehlung), mit Bildern, Kategorien, Suche und Filtern. Mit **Details** siehst du mehr. Mit **Installieren** wird ein kostenloses Plugin installiert, aber **nie automatisch aktiviert**. Den Knopf sehen nur Administratoren.
 
 ## Wenn etwas nicht klappt
